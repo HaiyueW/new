@@ -35,6 +35,7 @@
     			android:id="@+id/tableRow"
     			android:layout_width="fill_parent"
     			android:layout_height="fill_parent">
+    			
     			<Button
        				android:id="@+id/blueon"
         			android:layout_height="wrap_content"
@@ -68,10 +69,17 @@
 			</TableRow>
 
             <Button
-                android:id="@+id/bluesearch"
+                android:id="@+id/blueposture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bluesearch"
+                android:text="@string/blueposture"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/bluepedometer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bluepedometer" 
                 android:textSize="20sp" />
 
             <ListView

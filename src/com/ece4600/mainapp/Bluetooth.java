@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class Bluetooth extends Activity{
 	private BluetoothAdapter myBluetoothAdapter;
 	private ListView listpaired;
-	Button blueon, blueoff, bluecancel, bluesearch;
+	Button blueon, blueoff, bluecancel, blueposture, bluepedometer;
     
     //For toast messages:
     Context context;
@@ -26,7 +26,7 @@ public class Bluetooth extends Activity{
     //TI SensorTag device info
     private final String device1_MAC = "90:59:AF:0B:82:F4";
     private final String device2_MAC = "90:59:AF:0B:82:D9";
-    
+    private final String device3_MAC = "BC:6A:29:AB:61:CF";
     
     //--------------------------------------------------------------------
     // ON CREATE function
@@ -42,8 +42,9 @@ public class Bluetooth extends Activity{
 		blueon = (Button)findViewById(R.id.blueon);
 		blueoff = (Button)findViewById(R.id.blueoff);
 		bluecancel = (Button)findViewById(R.id.bluecancel);
-		bluesearch =(Button)findViewById(R.id.bluesearch);
-		
+		blueposture =(Button)findViewById(R.id.blueposture);
+		bluepedometer =(Button)findViewById(R.id.bluepedometer);
+
 		initButtons();
 		
 		context = this;
@@ -87,7 +88,6 @@ public class Bluetooth extends Activity{
 			break;
 		case R.id.blueoff:
 			//myBluetoothAdapter.disable();
-			Toast.makeText(getApplicationContext(), "Bluetooth Turned OFF", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.bluecancel:
 			//poll();
@@ -109,12 +109,22 @@ public class Bluetooth extends Activity{
 		});
 		
 	    
-		bluesearch.setOnClickListener(new View.OnClickListener() {
+		blueposture.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				 if(myBluetoothAdapter!=null){
 		        Intent intent = new Intent(Bluetooth.this, bleService.class);
 		        startService(intent);
+				 }
+			}     
+	    });
+		
+		bluepedometer.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				 if(myBluetoothAdapter!=null){
+		        Intent pedointent = new Intent(Bluetooth.this, bleService_pedo.class);
+		        startService(pedointent);
 				 }
 			}     
 	    });
@@ -136,6 +146,14 @@ public class Bluetooth extends Activity{
 					 }	
 			}     
 	    });
+		
+		blueoff.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				myBluetoothAdapter.disable();
+				Toast.makeText(getApplicationContext(), "Bluetooth Turned OFF", Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 	}
 	}
