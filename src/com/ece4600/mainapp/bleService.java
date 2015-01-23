@@ -442,6 +442,9 @@ private BluetoothGattCallback mGattCallback2 = new BluetoothGattCallback() {
 			public void run(){
 				//Log.i(DEBUG, "Connection successful, Getting Services");
 				Toast.makeText( bleService.this, "Device 2 accelerometers enabled", Toast.LENGTH_SHORT).show();
+				Intent dialogIntent = new Intent(bleService.this, MainActivity.class);
+				dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				bleService.this.startActivity(dialogIntent);
 			}
 		});
 		

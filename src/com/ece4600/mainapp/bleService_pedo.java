@@ -277,12 +277,14 @@ public class bleService_pedo extends Service {
 				public void run() {
 					// Log.i(DEBUG, "Connection successful, Getting Services");
 					Toast.makeText(bleService_pedo.this, "Device 3 accelerometers enabled",Toast.LENGTH_SHORT).show();
+					Intent dialogIntent = new Intent(bleService_pedo.this, MainActivity.class);
+					dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					bleService_pedo.this.startActivity(dialogIntent);
 				}
 			});
 
 			// readSensor(gatt);
 
-			startScan();
 			poll();
 			// stopScan();
 		}
@@ -306,7 +308,7 @@ public class bleService_pedo extends Service {
 
 	// POLLING
 	private void poll() {
-		handler.postDelayed(runnable, 100);
+		handler.postDelayed(runnable, 20);
 	}
 	
 	private Runnable runnable = new Runnable() {
@@ -314,7 +316,7 @@ public class bleService_pedo extends Service {
 		   public void run() {
 			  
 			  readDevice3();
-			  handler.postDelayed(this, 100);
+			  handler.postDelayed(this, 20);
 		       
 			  if (mSensor3 == mSensorState.CONNECTED){
 	          String data = "D1," + array_1d[0].xaxis +  "," + array_1d[0].yaxis +  "," + array_1d[0].zaxis;

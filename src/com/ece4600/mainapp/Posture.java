@@ -129,8 +129,7 @@ public class Posture extends Activity {
 					finish();
 				}
 			});
-			alertDialogHint.setNegativeButton("Cancel", 
-			new DialogInterface.OnClickListener(){
+			alertDialogHint.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
