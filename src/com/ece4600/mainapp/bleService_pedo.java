@@ -40,7 +40,7 @@ public class bleService_pedo extends Service {
 	private Handler handler = new Handler();
 
 	// TI SensorTag device info
-	private final String device3_MAC = "90:59:AF:0B:82:F4";//"BC:6A:29:AB:61:CF";
+	private final String device3_MAC = "BC:6A:29:AB:61:CF";
 
 	public dataArray[] array_1d = new dataArray[1];
 
@@ -230,7 +230,15 @@ public class bleService_pedo extends Service {
 					@Override
 					public void run() {
 						Log.i(DEBUG, "Conntection successful, Getting Services");
-						Toast.makeText(bleService_pedo.this,"Device 3 connected", Toast.LENGTH_SHORT).show();
+						final Toast toast = Toast.makeText(bleService_pedo.this,"Device 3 connected", Toast.LENGTH_SHORT);
+					    toast.show();
+					    Handler handlerstop = new Handler();
+					        handlerstop.postDelayed(new Runnable() {
+					           @Override
+					           public void run() {
+					               toast.cancel(); 
+					           }
+					    }, 500);
 					}
 				});
 				mSensor3 = mSensorState.CONNECTED;
@@ -276,7 +284,15 @@ public class bleService_pedo extends Service {
 				@Override
 				public void run() {
 					// Log.i(DEBUG, "Connection successful, Getting Services");
-					Toast.makeText(bleService_pedo.this, "Device 3 accelerometers enabled",Toast.LENGTH_SHORT).show();
+					final Toast toast = Toast.makeText(bleService_pedo.this,"Device 3 accelerometers enabled", Toast.LENGTH_SHORT);
+				    toast.show();
+				    Handler handlerstop = new Handler();
+				        handlerstop.postDelayed(new Runnable() {
+				           @Override
+				           public void run() {
+				               toast.cancel(); 
+				           }
+				    }, 500);
 					Intent dialogIntent = new Intent(bleService_pedo.this, MainActivity.class);
 					dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					bleService_pedo.this.startActivity(dialogIntent);

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,13 +16,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Pedometer extends Activity{
 	
 	private TextView currentX, currentY, currentZ, maxX, maxY, maxZ, step,speed;
 	Button reset, returnbutton, start, stop;
-	private int stepnum = 0;
+	private int stepnum = 0, stepdetect = 0, stepthres = 0;
 	private float speednum = 0;
+	private boolean startflag = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +87,30 @@ public class Pedometer extends Activity{
 		case R.id.pedo_start:
 			onResume();
 			//countdowndisplay();
+			stepthres = stepnum;
+			startflag = true;
+			final Toast toast = Toast.makeText(getApplicationContext(), "Step Detection Start", Toast.LENGTH_SHORT);
+		    toast.show();
+		    Handler handler = new Handler();
+		        handler.postDelayed(new Runnable() {
+		           @Override
+		           public void run() {
+		               toast.cancel(); 
+		           }
+		    }, 500);
 			break;
 		case R.id.pedo_stop:
 			onPause();
+			startflag = false;
+			final Toast toaststop = Toast.makeText(getApplicationContext(), "Step Detection Stop", Toast.LENGTH_SHORT);
+		    toaststop.show();
+		    Handler handlerstop = new Handler();
+		        handlerstop.postDelayed(new Runnable() {
+		           @Override
+		           public void run() {
+		               toaststop.cancel(); 
+		           }
+		    }, 500);
 			break;
 		case R.id.returnpedo:
 			startActivity(new Intent(Pedometer.this, MainActivity.class));
@@ -101,6 +125,7 @@ public class Pedometer extends Activity{
 			maxZ.setText("0.0");
 			step.setText("0.0");
 			speed.setText("0.0");
+			startflag = false;
 			break;
 		default:
 			break;
@@ -175,6 +200,7 @@ public class Pedometer extends Activity{
 		    public void onReceive(Context context, Intent intent) {
 		        
 		        	stepnum = intent.getIntExtra("STEP", stepnum);
+		        	stepdetect = stepnum - stepthres;
 		        	speednum = intent.getFloatExtra("SPEED",speednum);
 		        	float MaxX  = intent.getFloatExtra("MaxX", 0.0f);
 		        	float MaxY  = intent.getFloatExtra("MaxY", 0.0f);
@@ -184,15 +210,16 @@ public class Pedometer extends Activity{
 		        	float CurrentY  = intent.getFloatExtra("CurrentY", 0.0f);
 		        	float CurrentZ  = intent.getFloatExtra("CurrentZ", 0.0f);
 		        	
+		        	if (startflag == true){
 		        	maxX.setText(Float.toString(MaxX)); // This is different from posture. Perhaps you dont have to convert your float value
 		        	maxY.setText(Float.toString(MaxY));
 		        	maxZ.setText(Float.toString(MaxZ));
 		        	currentX.setText(Float.toString(CurrentX));
 		        	currentY.setText(Float.toString(CurrentY));
 		        	currentZ.setText(Float.toString(CurrentZ));
-		        	step.setText(Integer.toString(stepnum));
+		        	step.setText(Integer.toString(stepdetect));
 		        	speed.setText(Float.toString(speednum));
-		        	
+		        	}
 		        	
 		       }
 		        

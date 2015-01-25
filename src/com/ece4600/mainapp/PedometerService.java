@@ -21,7 +21,7 @@ public class PedometerService extends Service{
 	private long LastStepDetection = 0;
 	private float StepDetectionDelta = 0, speednum = 0;
 	private double DifferenceDelta = 1.0;
-	private double minPeak = 3.0;
+	private double minPeak = 0.2;
 	public static dataArrayFloat[] array_1d = new dataArrayFloat[1];
 	
 	@Override
@@ -103,17 +103,17 @@ public class PedometerService extends Service{
 			long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(delta);
 			test = Math.max(Math.abs(accX), Math.max(Math.abs(accY), Math.abs(accZ)));
 			// if the change is below 1.5, it is just plain noise
-			if ((deltaX < 1.5) && (deltaY < 1.5) && (deltaZ < 1.5)) {
+			if ((deltaX < 0.05) && (deltaY < 0.05) && (deltaZ < 0.05)) {
 				deltaX = 0;
 				deltaY = 0;
 				deltaZ = 0;
 			} else if (iteration == 500) {
 				iteration = 0;
-				if ((test == Math.abs(accX)) && (test > 1.5)) {
+				if ((test == Math.abs(accX)) && (test > 0.5)) {
 					i = 1;
-				} else if ((test == Math.abs(accY)) && (test > 1.5)) {
+				} else if ((test == Math.abs(accY)) && (test > 0.5)) {
 					i = 2;
-				} else if ((test == Math.abs(accZ)) && (test > 1.5)) {
+				} else if ((test == Math.abs(accZ)) && (test > 0.5)) {
 					i = 3;
 				}
 			}
@@ -129,7 +129,10 @@ public class PedometerService extends Service{
 						if (xn > 1 && delta > StepDetectionDelta && MaxX - Math.abs(accX) > minPeak) {
 							LastStepDetection = time;
 							stepnum++;
-							speednum = stepnum / timeSeconds;
+							timeSeconds += timeSeconds;
+							if (timeSeconds != 0){
+								speednum = stepnum / timeSeconds;
+							}
 							iteration++;
 							xp = 0;
 							xn = 0;
@@ -138,7 +141,7 @@ public class PedometerService extends Service{
 					}
 				}
 				xoldvalue = Math.abs(accX);
-				Log.i("Pedometer", "Step detected Xaxis" + stepnum + "Delta time" + delta);
+				Log.i("Pedometer", "Step detected Xaxis" + stepnum + "Delta time" + timeSeconds);
 				break;
 			case 2:
 				if (deltaY > 0) {
@@ -150,7 +153,10 @@ public class PedometerService extends Service{
 						if (yn > 1 && delta > StepDetectionDelta && MaxY - Math.abs(accY) > minPeak) {
 							LastStepDetection = time;
 							stepnum++;
-							speednum = stepnum / timeSeconds;
+							timeSeconds += timeSeconds;
+							if (timeSeconds != 0){
+								speednum = stepnum / timeSeconds;
+							}
 							iteration++;
 							yp = 0;
 							yn = 0;
@@ -159,7 +165,7 @@ public class PedometerService extends Service{
 					}
 				}
 				yoldvalue = Math.abs(accY);
-				Log.i("Pedometer", "Step detected Yaxis " + stepnum + "Delta time" + delta);
+				Log.i("Pedometer", "Step detected Yaxis " + stepnum + "Delta time" + timeSeconds);
 				break;
 			case 3:
 				if (deltaZ > 0) {
@@ -171,7 +177,10 @@ public class PedometerService extends Service{
 						if (zn > 1 && delta > StepDetectionDelta && MaxZ - Math.abs(accZ) > minPeak) {
 							LastStepDetection = time;
 							stepnum++;
-							speednum = stepnum / timeSeconds;
+							timeSeconds += timeSeconds;
+							if (timeSeconds != 0){
+								speednum = stepnum / timeSeconds;
+							}
 							iteration++;
 							zp = 0;
 							zn = 0;
@@ -180,7 +189,7 @@ public class PedometerService extends Service{
 					}
 				}
 				zoldvalue = Math.abs(accZ);
-				Log.i("Pedometer", "Step detected Zaxis " + stepnum + "Delta time" + delta);
+				Log.i("Pedometer", "Step detected Zaxis " + stepnum + "Delta time" + timeSeconds);
 				break;
 			default:
 				break;
@@ -206,6 +215,8 @@ public class PedometerService extends Service{
 					i.putExtra("CurrentY", lastY);
 					i.putExtra("CurrentZ", lastZ);
 					
+					i.putExtra("STEP", stepnum);
+					i.putExtra("SPEED", speednum);
 					sendBroadcast(i);
 				}
 			});

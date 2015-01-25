@@ -291,7 +291,16 @@ private BluetoothGattCallback mGattCallback1 = new BluetoothGattCallback() {
     			@Override
     			public void run(){
     				Log.i(DEBUG, "Conntection successful, Getting Services");
-    				Toast.makeText( bleService.this, "Device 1 connected", Toast.LENGTH_SHORT).show();
+    				//Toast.makeText( bleService.this, "Device 1 connected", Toast.LENGTH_SHORT).show();
+    				final Toast toast = Toast.makeText(bleService.this,"Device 1 connected", Toast.LENGTH_SHORT);
+				    toast.show();
+				    Handler handlerstop = new Handler();
+				        handlerstop.postDelayed(new Runnable() {
+				           @Override
+				           public void run() {
+				               toast.cancel(); 
+				           }
+				    }, 500);
     			}
     		});
     		mSensor1 = mSensorState.CONNECTED;
@@ -340,7 +349,16 @@ private BluetoothGattCallback mGattCallback1 = new BluetoothGattCallback() {
 			@Override
 			public void run(){
 				//Log.i(DEBUG, "Connection successful, Getting Services");
-				Toast.makeText( bleService.this, "Device 1 accelerometers enabled", Toast.LENGTH_SHORT).show();
+				//Toast.makeText( bleService.this, "Device 1 accelerometers enabled", Toast.LENGTH_SHORT).show();
+				final Toast toast = Toast.makeText(bleService.this,"Device 1 accelerometers enabled", Toast.LENGTH_SHORT);
+			    toast.show();
+			    Handler handlerstop = new Handler();
+			        handlerstop.postDelayed(new Runnable() {
+			           @Override
+			           public void run() {
+			               toast.cancel(); 
+			           }
+			    }, 500);
 			}
 		});
 		
@@ -394,7 +412,16 @@ private BluetoothGattCallback mGattCallback2 = new BluetoothGattCallback() {
  			@Override
  			public void run(){
  				Log.i(DEBUG, "Conntection successful, Getting Services");
- 				Toast.makeText( bleService.this, "Device 2 connected", Toast.LENGTH_SHORT).show();
+ 				//Toast.makeText( bleService.this, "Device 2 connected", Toast.LENGTH_SHORT).show();
+ 				final Toast toast = Toast.makeText(bleService.this,"Device 2 connected", Toast.LENGTH_SHORT);
+			    toast.show();
+			    Handler handlerstop = new Handler();
+			        handlerstop.postDelayed(new Runnable() {
+			           @Override
+			           public void run() {
+			               toast.cancel(); 
+			           }
+			    }, 500);
  			}
  		});
  		mSensor2 = mSensorState.CONNECTED;
@@ -441,7 +468,16 @@ private BluetoothGattCallback mGattCallback2 = new BluetoothGattCallback() {
 			@Override
 			public void run(){
 				//Log.i(DEBUG, "Connection successful, Getting Services");
-				Toast.makeText( bleService.this, "Device 2 accelerometers enabled", Toast.LENGTH_SHORT).show();
+				//Toast.makeText( bleService.this, "Device 2 accelerometers enabled", Toast.LENGTH_SHORT).show();
+				final Toast toast = Toast.makeText(bleService.this,"Device 2 accelerometers enabled", Toast.LENGTH_SHORT);
+			    toast.show();
+			    Handler handlerstop = new Handler();
+			        handlerstop.postDelayed(new Runnable() {
+			           @Override
+			           public void run() {
+			               toast.cancel(); 
+			           }
+			    }, 500);
 				Intent dialogIntent = new Intent(bleService.this, MainActivity.class);
 				dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				bleService.this.startActivity(dialogIntent);
