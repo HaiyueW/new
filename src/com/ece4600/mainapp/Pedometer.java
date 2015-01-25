@@ -184,7 +184,7 @@ public class Pedometer extends Activity{
 		        	float CurrentY  = intent.getFloatExtra("CurrentY", 0.0f);
 		        	float CurrentZ  = intent.getFloatExtra("CurrentZ", 0.0f);
 		        	
-		        	maxX.setText(Float.toString(MaxX));
+		        	maxX.setText(Float.toString(MaxX)); // This is different from posture. Perhaps you dont have to convert your float value
 		        	maxY.setText(Float.toString(MaxY));
 		        	maxZ.setText(Float.toString(MaxZ));
 		        	currentX.setText(Float.toString(CurrentX));

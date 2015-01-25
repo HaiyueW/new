@@ -40,7 +40,7 @@ public class bleService_pedo extends Service {
 	private Handler handler = new Handler();
 
 	// TI SensorTag device info
-	private final String device3_MAC = "BC:6A:29:AB:61:CF";
+	private final String device3_MAC = "90:59:AF:0B:82:F4";//"BC:6A:29:AB:61:CF";
 
 	public dataArray[] array_1d = new dataArray[1];
 
@@ -322,7 +322,7 @@ public class bleService_pedo extends Service {
 	          String data = "D1," + array_1d[0].xaxis +  "," + array_1d[0].yaxis +  "," + array_1d[0].zaxis;
 	          Log.i(DEBUG, data);
 	          
-	          Intent i = new Intent(bleService_pedo.this, Pedometer.class);
+	          Intent i = new Intent(bleService_pedo.this, PedometerService.class);
 			  i.putExtra("X", (float) array_1d[0].xaxis);
 			  i.putExtra("Y",(float) array_1d[0].yaxis);
 			  i.putExtra("Z", (float) array_1d[0].zaxis);

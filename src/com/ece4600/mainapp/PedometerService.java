@@ -46,8 +46,8 @@ public class PedometerService extends Service{
 		deltaY = 0;
 		deltaZ = 0;
 		
-		Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
-		h.postDelayed(resend, 1000);	
+		//Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
+		//h.postDelayed(resend, 1000);	
 		
 		super.onCreate();
 	}
@@ -63,6 +63,8 @@ public class PedometerService extends Service{
 		
 		dataArrayFloat data = new dataArrayFloat(X, Y, Z);
 		array_1d[0] = data;
+		
+		Log.i("Pedometer", String.valueOf(X) + "," + String.valueOf(Y) + ","+String.valueOf(Z));
 		
 		stepDetection();
 		
@@ -188,6 +190,8 @@ public class PedometerService extends Service{
 			lastY = accY;
 			lastZ = accZ;
 			
+			
+			//Perhaps you dont need a handler
 			Handler acc = new Handler(Looper.getMainLooper());
 			acc.post(new Runnable(){
 				@Override
