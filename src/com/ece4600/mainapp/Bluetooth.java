@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class Bluetooth extends Activity{
 	private BluetoothAdapter myBluetoothAdapter;
 	private ListView listpaired;
-	Button blueon, blueoff, bluecancel, blueposture, bluepedometer;
+	Button blueon, blueoff, bluecancel, blueposture, bluepedometer, bluemain;
     
     //For toast messages:
     Context context;
@@ -44,6 +44,7 @@ public class Bluetooth extends Activity{
 		bluecancel = (Button)findViewById(R.id.bluecancel);
 		blueposture =(Button)findViewById(R.id.blueposture);
 		bluepedometer =(Button)findViewById(R.id.bluepedometer);
+		bluemain =(Button)findViewById(R.id.bluemain);
 
 		initButtons();
 		
@@ -87,7 +88,7 @@ public class Bluetooth extends Activity{
 			//finish();
 			break;
 		case R.id.blueoff:
-			//myBluetoothAdapter.disable();
+			myBluetoothAdapter.disable();
 			break;
 		case R.id.bluecancel:
 			//poll();
@@ -152,6 +153,13 @@ public class Bluetooth extends Activity{
 			public void onClick(View v) {
 				myBluetoothAdapter.disable();
 				Toast.makeText(getApplicationContext(), "Bluetooth Turned OFF", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		bluemain.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(Bluetooth.this, MainActivity.class));
 			}
 		});
 		

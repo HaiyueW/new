@@ -69,6 +69,13 @@
 			</TableRow>
 
             <Button
+                android:id="@+id/bluemain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bluemain" 
+                android:textSize="20sp" />
+
+            <Button
                 android:id="@+id/blueposture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,15 +100,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <ListView
-        android:id="@+id/bluenewlist"
-        android:layout_width="match_parent"
-        android:layout_height="386dp"
-        android:layout_alignBottom="@+id/scrollmain"
-        android:layout_alignLeft="@+id/scrollmain"
-        android:visibility="invisible"
-        tools:listitem="@android:layout/simple_list_item_1" >
-    </ListView>
 
 </RelativeLayout>

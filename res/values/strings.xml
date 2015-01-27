@@ -79,5 +79,6 @@
     <string name="pedo_speed">Walking Speed</string>
     <string name="pedo_speednum">0.0</string>
     <string name="bluepedometer">Pedometer Service</string>
+    <string name="bluemain">Main Menu</string>
 
 </resources>

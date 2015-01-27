@@ -37,6 +37,7 @@ public class bleService extends Service{
 	
 	private enum mSensorState {CONNECTED, DISCONNECTED};
 	private mSensorState mSensor1, mSensor2;
+	private BluetoothAdapter myBluetoothAdapter;
 	
 	private static final long SCAN_PERIOD = 2500;  // Used to scan for devices for only 10 secs
     
@@ -101,6 +102,7 @@ public class bleService extends Service{
 		initialize();
 		
 	    createAppFolder();
+		myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		filePath = Environment.getExternalStorageDirectory() + "/G01Capstone/";
 		
     	Time now = new Time();
@@ -113,6 +115,19 @@ public class bleService extends Service{
 		mSensor2 = mSensorState.DISCONNECTED;
 		MyThread myThread = new MyThread(); // creating a new thread?
 		myThread.start();
+		
+		int state = myBluetoothAdapter.getState();
+		if (state == 10){
+			final Toast toast = Toast.makeText(bleService.this,"Bluetooth is OFF!", Toast.LENGTH_SHORT);
+		    toast.show();
+		    Handler handlerstop = new Handler();
+		        handlerstop.postDelayed(new Runnable() {
+		           @Override
+		           public void run() {
+		               toast.cancel(); 
+		           }
+		    }, 500);
+		}
 		
 		//handler.postDelayed(test, 100);
 		

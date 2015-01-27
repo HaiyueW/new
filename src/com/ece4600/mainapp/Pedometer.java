@@ -3,8 +3,10 @@ package com.ece4600.mainapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -23,9 +25,12 @@ public class Pedometer extends Activity{
 	private TextView currentX, currentY, currentZ, maxX, maxY, maxZ, step,speed;
 	Button reset, returnbutton, start, stop;
 	private int stepnum = 0, stepdetect = 0, stepthres = 0;
-	private float speednum = 0;
+	private double speednum = 0;
+	private double time = 0, timedetect = 0, timethres = 0;
 	private boolean startflag = false;
-
+	private long Time = 0;
+	private BluetoothAdapter myBluetoothAdapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,6 +41,8 @@ public class Pedometer extends Activity{
 		returnbutton = (Button) findViewById(R.id.returnpedo);
 		start = (Button) findViewById(R.id.pedo_start);
 		stop = (Button) findViewById(R.id.pedo_stop);
+		myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		bluetoothTest();
 		
 		IntentFilter intentFilter = new IntentFilter("PEDOMETER_EVENT");
         registerReceiver(broadcastRx, intentFilter);
@@ -51,6 +58,33 @@ public class Pedometer extends Activity{
 		maxZ = (TextView) findViewById(R.id.pedo_acczmax);
 		step = (TextView) findViewById(R.id.pedo_stepnum);
 		speed = (TextView) findViewById(R.id.pedo_speednum);
+	}
+	
+	public void bluetoothTest(){
+		int state = myBluetoothAdapter.getState();
+		if (state == 10){
+			AlertDialog.Builder alertDialogHint = new AlertDialog.Builder(this);
+			alertDialogHint.setMessage("Bluetooth is OFF! Connection Fail!");
+			alertDialogHint.setPositiveButton("Bluetooth Setting",
+			new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent i = new Intent(Pedometer.this,Bluetooth.class);
+					startActivity(i);
+					finish();
+				}
+			});
+			alertDialogHint.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			AlertDialog alertDialog = alertDialogHint.create();
+			alertDialog.show();
+		}
 	}
 
 	 @Override
@@ -88,6 +122,7 @@ public class Pedometer extends Activity{
 			onResume();
 			//countdowndisplay();
 			stepthres = stepnum;
+			timethres = time;
 			startflag = true;
 			final Toast toast = Toast.makeText(getApplicationContext(), "Step Detection Start", Toast.LENGTH_SHORT);
 		    toast.show();
@@ -125,7 +160,7 @@ public class Pedometer extends Activity{
 			maxZ.setText("0.0");
 			step.setText("0.0");
 			speed.setText("0.0");
-			startflag = false;
+			startflag = false;		
 			break;
 		default:
 			break;
@@ -201,7 +236,12 @@ public class Pedometer extends Activity{
 		        
 		        	stepnum = intent.getIntExtra("STEP", stepnum);
 		        	stepdetect = stepnum - stepthres;
-		        	speednum = intent.getFloatExtra("SPEED",speednum);
+		        	time = intent.getLongExtra("TIME",Time);
+		        	timedetect = time - timethres;
+					if (time != 0 && stepdetect != 0){
+						speednum = stepdetect / timedetect;
+					}
+		        	
 		        	float MaxX  = intent.getFloatExtra("MaxX", 0.0f);
 		        	float MaxY  = intent.getFloatExtra("MaxY", 0.0f);
 		        	float MaxZ  = intent.getFloatExtra("MaxZ", 0.0f);
@@ -218,7 +258,7 @@ public class Pedometer extends Activity{
 		        	currentY.setText(Float.toString(CurrentY));
 		        	currentZ.setText(Float.toString(CurrentZ));
 		        	step.setText(Integer.toString(stepdetect));
-		        	speed.setText(Float.toString(speednum));
+		        	speed.setText(Double.toString(speednum));
 		        	}
 		        	
 		       }

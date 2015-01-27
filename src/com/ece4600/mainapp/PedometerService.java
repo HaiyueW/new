@@ -130,9 +130,6 @@ public class PedometerService extends Service{
 							LastStepDetection = time;
 							stepnum++;
 							timeSeconds += timeSeconds;
-							if (timeSeconds != 0){
-								speednum = stepnum / timeSeconds;
-							}
 							iteration++;
 							xp = 0;
 							xn = 0;
@@ -154,9 +151,6 @@ public class PedometerService extends Service{
 							LastStepDetection = time;
 							stepnum++;
 							timeSeconds += timeSeconds;
-							if (timeSeconds != 0){
-								speednum = stepnum / timeSeconds;
-							}
 							iteration++;
 							yp = 0;
 							yn = 0;
@@ -178,9 +172,6 @@ public class PedometerService extends Service{
 							LastStepDetection = time;
 							stepnum++;
 							timeSeconds += timeSeconds;
-							if (timeSeconds != 0){
-								speednum = stepnum / timeSeconds;
-							}
 							iteration++;
 							zp = 0;
 							zn = 0;
@@ -198,6 +189,7 @@ public class PedometerService extends Service{
 			lastX = accX;
 			lastY = accY;
 			lastZ = accZ;
+			final long Time = timeSeconds;
 			
 			
 			//Perhaps you dont need a handler
@@ -216,7 +208,7 @@ public class PedometerService extends Service{
 					i.putExtra("CurrentZ", lastZ);
 					
 					i.putExtra("STEP", stepnum);
-					i.putExtra("SPEED", speednum);
+					i.putExtra("TIME", Time);
 					sendBroadcast(i);
 				}
 			});
