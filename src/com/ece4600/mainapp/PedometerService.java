@@ -129,7 +129,7 @@ public class PedometerService extends Service{
 						if (xn > 1 && delta > StepDetectionDelta && MaxX - Math.abs(accX) > minPeak) {
 							LastStepDetection = time;
 							stepnum++;
-							timeSeconds += timeSeconds;
+							//timeSeconds += timeSeconds;
 							iteration++;
 							xp = 0;
 							xn = 0;
@@ -150,7 +150,7 @@ public class PedometerService extends Service{
 						if (yn > 1 && delta > StepDetectionDelta && MaxY - Math.abs(accY) > minPeak) {
 							LastStepDetection = time;
 							stepnum++;
-							timeSeconds += timeSeconds;
+							//timeSeconds += timeSeconds;
 							iteration++;
 							yp = 0;
 							yn = 0;
@@ -171,7 +171,7 @@ public class PedometerService extends Service{
 						if (zn > 1 && delta > StepDetectionDelta && MaxZ - Math.abs(accZ) > minPeak) {
 							LastStepDetection = time;
 							stepnum++;
-							timeSeconds += timeSeconds;
+							//timeSeconds += timeSeconds;
 							iteration++;
 							zp = 0;
 							zn = 0;

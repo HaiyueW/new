@@ -237,6 +237,7 @@ public class Pedometer extends Activity{
 		        	stepnum = intent.getIntExtra("STEP", stepnum);
 		        	stepdetect = stepnum - stepthres;
 		        	time = intent.getLongExtra("TIME",Time);
+		        	time += time;
 		        	timedetect = time - timethres;
 					if (time != 0 && stepdetect != 0){
 						speednum = stepdetect / timedetect;
