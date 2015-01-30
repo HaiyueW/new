@@ -1,6 +1,8 @@
 package com.ece4600.mainapp;
 
 
+import java.util.concurrent.TimeUnit;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -12,6 +14,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +29,8 @@ public class Pedometer extends Activity{
 	Button reset, returnbutton, start, stop;
 	private int stepnum = 0, stepdetect = 0, stepthres = 0;
 	private double speednum = 0;
-	private double time = 0, timedetect = 0, timethres = 0;
+	private long timedetect = 0, timeSecondsstart = 0, timestart = 0, timeSecondsstop = 0, timestop = 0;
 	private boolean startflag = false;
-	private long Time = 0;
 	private BluetoothAdapter myBluetoothAdapter;
 	
 	@Override
@@ -120,9 +122,11 @@ public class Pedometer extends Activity{
 		switch (v.getId()) {
 		case R.id.pedo_start:
 			onResume();
+			timestart = System.currentTimeMillis();
+			timeSecondsstart = TimeUnit.MILLISECONDS.toSeconds(timestart);
 			//countdowndisplay();
 			stepthres = stepnum;
-			timethres = time;
+			speednum = 0;
 			startflag = true;
 			final Toast toast = Toast.makeText(getApplicationContext(), "Step Detection Start", Toast.LENGTH_SHORT);
 		    toast.show();
@@ -236,13 +240,13 @@ public class Pedometer extends Activity{
 		        
 		        	stepnum = intent.getIntExtra("STEP", stepnum);
 		        	stepdetect = stepnum - stepthres;
-		        	time = intent.getLongExtra("TIME",Time);
-		        	time += time;
-		        	timedetect = time - timethres;
-					if (time != 0 && stepdetect != 0){
-						speednum = stepdetect / timedetect;
+		        	timestop = System.currentTimeMillis();
+					timeSecondsstop = TimeUnit.MILLISECONDS.toSeconds(timestop);
+					timedetect = timeSecondsstop - timeSecondsstart;
+					if (timedetect != 0){
+						speednum = stepdetect*60/ timedetect;
+						Log.i("Speed", "speed"+ speednum + "step"+ stepdetect + "time" + timedetect);
 					}
-		        	
 		        	float MaxX  = intent.getFloatExtra("MaxX", 0.0f);
 		        	float MaxY  = intent.getFloatExtra("MaxY", 0.0f);
 		        	float MaxZ  = intent.getFloatExtra("MaxZ", 0.0f);
@@ -259,7 +263,7 @@ public class Pedometer extends Activity{
 		        	currentY.setText(Float.toString(CurrentY));
 		        	currentZ.setText(Float.toString(CurrentZ));
 		        	step.setText(Integer.toString(stepdetect));
-		        	speed.setText(Double.toString(speednum));
+		        	speed.setText(Double.toString(speednum)+" steps/min");
 		        	}
 		        	
 		       }

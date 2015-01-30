@@ -76,19 +76,19 @@ public class PedometerService extends Service{
 		super.onDestroy();
 	}// End of onDestroy
 	
-	private Runnable resend = new Runnable() {
-		   @Override
-		   public void run() {
-			 
-			  Intent i = new Intent("PEDOMETER_EVENT");
-			  i.putExtra("STEP", stepnum);
-			  i.putExtra("SPEED", speednum);
-			  sendBroadcast(i);
-			 
-			  Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
-			  h.postDelayed(this, 1000);
-			  
-		   }};
+//	private Runnable resend = new Runnable() {
+//		   @Override
+//		   public void run() {
+//			 
+//			  Intent i = new Intent("PEDOMETER_EVENT");
+//			  i.putExtra("STEP", stepnum);
+//			  i.putExtra("SPEED", speednum);
+//			  sendBroadcast(i);
+//			 
+//			  Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
+//			  h.postDelayed(this, 1000);
+//			  
+//		   }};
 		   
 	public void stepDetection() {
 			float accX = array_1d[0].xaxis;
@@ -98,6 +98,7 @@ public class PedometerService extends Service{
 			deltaX = accX - lastX;
 			deltaY = accY - lastY;
 			deltaZ = accZ - lastZ;
+			
 			long time = System.currentTimeMillis();
 			long delta = time - LastStepDetection;
 			long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(delta);
@@ -189,7 +190,6 @@ public class PedometerService extends Service{
 			lastX = accX;
 			lastY = accY;
 			lastZ = accZ;
-			final long Time = timeSeconds;
 			
 			
 			//Perhaps you dont need a handler
@@ -208,7 +208,6 @@ public class PedometerService extends Service{
 					i.putExtra("CurrentZ", lastZ);
 					
 					i.putExtra("STEP", stepnum);
-					i.putExtra("TIME", Time);
 					sendBroadcast(i);
 				}
 			});
