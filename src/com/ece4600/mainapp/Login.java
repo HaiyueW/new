@@ -21,6 +21,9 @@ public class Login extends Activity implements OnClickListener{
 	EditText txtpass;
 	Button login;
 	Button cancel;
+	
+	/// need to login through php, get info from data base, then save the info into a global variable, that will be passed onto the next screen and other activities.
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
