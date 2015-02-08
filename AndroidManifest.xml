@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -27,6 +27,8 @@
         <service android:name="PostureService" ></service>
         <service android:name="bleService_pedo" ></service>
         <service android:name="PedometerService" ></service>
+        <service android:name="btMateService"></service>
+        <service android:name ="ECGdataSaveService"></service>
         
         <activity
             android:name=".Splash"

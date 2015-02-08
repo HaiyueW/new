@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/chart"
         android:layout_alignParentBottom="true"
-        android:onClick="startDAQ"
+        android:minWidth="100dp"
+        
         android:text="@string/startTxt" />
 
     <Button
@@ -44,23 +45,27 @@
         android:text="@string/returnheart" />
 
     <Button
-        android:id="@+id/pauseButton"
+        android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/startButton"
         android:layout_alignBottom="@+id/startButton"
         android:layout_toRightOf="@+id/startButton"
-        android:onClick="pauseDAQ"
-        android:text="@string/pauseTxt" />
+        android:minWidth="100dp"
+        
+        android:text="@string/stopTxt" />
 
-    <Button
-        android:id="@+id/stopButton"
+    <ToggleButton
+        android:id="@+id/recordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/pauseButton"
-        android:layout_alignBottom="@+id/pauseButton"
-        android:layout_toRightOf="@+id/pauseButton"
-        android:onClick="stopDAQ"
-        android:text="@string/stopTxt" />
+        android:layout_alignBottom="@+id/stopButton"
+        android:layout_alignTop="@+id/stopButton"
+        android:layout_toRightOf="@+id/stopButton"
+        android:minHeight="45dp"
+        android:minWidth="100dp"
+        android:text="ToggleButton"
+        android:textOff="Record"
+        android:textOn="Record" />
 
 </RelativeLayout>

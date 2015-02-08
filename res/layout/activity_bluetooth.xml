@@ -75,6 +75,15 @@
                 android:text="@string/bluemain" 
                 android:textSize="20sp" />
 
+            <ToggleButton
+                android:id="@+id/blueECG"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:text="ECG Service"
+                android:textOff="ECG Service: disconnected"
+                android:textOn="ECG Service: connected"
+                android:textSize="20sp" />
+
             <Button
                 android:id="@+id/blueposture"
                 android:layout_width="match_parent"
@@ -88,15 +97,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bluepedometer" 
                 android:textSize="20sp" />
-
-            <ListView
-                android:id="@+id/bluepairedlist"
-                android:layout_width="match_parent"
-                android:layout_height="282dp"
-                android:visibility="visible"
-                tools:listitem="@android:layout/simple_list_item_1" >
-
-            </ListView>
 
         </LinearLayout>
     </ScrollView>

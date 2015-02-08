@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -13,11 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class Bluetooth extends Activity{
 	private BluetoothAdapter myBluetoothAdapter;
 	private ListView listpaired;
 	Button blueon, blueoff, bluecancel, blueposture, bluepedometer, bluemain;
+	ToggleButton blueECG;
     
     //For toast messages:
     Context context;
@@ -27,6 +30,10 @@ public class Bluetooth extends Activity{
     private final String device1_MAC = "90:59:AF:0B:82:F4";
     private final String device2_MAC = "90:59:AF:0B:82:D9";
     private final String device3_MAC = "BC:6A:29:AB:61:CF";
+    
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
+	private boolean blueState;
     
     //--------------------------------------------------------------------
     // ON CREATE function
@@ -45,7 +52,11 @@ public class Bluetooth extends Activity{
 		blueposture =(Button)findViewById(R.id.blueposture);
 		bluepedometer =(Button)findViewById(R.id.bluepedometer);
 		bluemain =(Button)findViewById(R.id.bluemain);
-
+		
+		blueECG = (ToggleButton)findViewById(R.id.blueECG);
+		
+		setUpPreferences();
+		restorePreferences();
 		initButtons();
 		
 		context = this;
@@ -163,7 +174,43 @@ public class Bluetooth extends Activity{
 			}
 		});
 		
+		blueECG.setOnClickListener(new View.OnClickListener() {
+			
+			Intent ECGintent = new Intent(Bluetooth.this, btMateService.class);
+	        
+
+			@Override
+			public void onClick(View v) {
+				if (blueECG.isChecked()){
+					editor.putBoolean("blueECG", true);
+					editor.commit();
+					startService(ECGintent);
+					
+					
+				} else{
+					editor.putBoolean("blueECG", false);
+					editor.commit();
+					stopService(ECGintent);
+				}
+				
+			}
+			
+		});
+		
 	}
+	
+	
+	
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("bluetoothPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
+	
+	public void restorePreferences(){
+		
+		blueECG.setChecked(settings.getBoolean("blueECG", false));
+	}
+	
 	}
 
  
