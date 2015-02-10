@@ -1,0 +1,138 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.ece4600.mainapp.Bluetooth" >
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/bluetooth"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/bluetooth"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/bluemain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="@string/bluemain"
+            android:textSize="20sp" />
+
+        <TableRow
+            android:id="@+id/tableRow"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:id="@+id/blueon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".35"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:text="@string/blueon"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/blueoff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".35"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:text="@string/blueoff"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/bluecancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".35"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:text="@string/bluecancel"
+                android:textSize="20sp" />
+        </TableRow>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/linearlayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp" >
+
+        <Button
+            android:id="@+id/blueECG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dip"
+            android:text="ECG"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/bluepedometer"
+            android:layout_width="400dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/blueposture"
+            android:minWidth="330dip"
+            android:text="@string/bluepedometer"
+            android:textSize="20sp" />
+
+        <Switch
+            android:id="@+id/bluePostureState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bluepedometer"
+            android:layout_alignBottom="@+id/bluepedometer"
+            android:layout_alignLeft="@+id/blueECGState"
+            android:clickable="false"
+            android:enabled="false"
+            android:longClickable="false" />
+
+        <Button
+            android:id="@+id/blueposture"
+            android:layout_width="400dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/blueECG"
+            android:minWidth="400dip"
+            android:text="@string/blueposture"
+            android:textSize="20sp" />
+
+        <Switch
+            android:id="@+id/blueECGState"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/blueposture"
+            android:layout_toRightOf="@+id/blueECG"
+            android:clickable="false"
+            android:longClickable="false" />
+
+        <Switch
+            android:id="@+id/bluePedometerState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/blueposture"
+            android:layout_alignBottom="@+id/blueposture"
+            android:layout_alignLeft="@+id/blueECGState"
+            android:clickable="false"
+            android:enabled="false"
+            android:longClickable="false" />
+    </RelativeLayout>
+
+</RelativeLayout>

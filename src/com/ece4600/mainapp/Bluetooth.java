@@ -13,14 +13,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class Bluetooth extends Activity{
 	private BluetoothAdapter myBluetoothAdapter;
 	private ListView listpaired;
-	Button blueon, blueoff, bluecancel, blueposture, bluepedometer, bluemain;
-	ToggleButton blueECG;
+	Button blueon, blueoff, bluecancel, blueposture, bluepedometer, bluemain,blueECG;
+	Switch postureState, pedometerState, ECGState;
     
     //For toast messages:
     Context context;
@@ -53,7 +54,11 @@ public class Bluetooth extends Activity{
 		bluepedometer =(Button)findViewById(R.id.bluepedometer);
 		bluemain =(Button)findViewById(R.id.bluemain);
 		
-		blueECG = (ToggleButton)findViewById(R.id.blueECG);
+		blueECG = (Button)findViewById(R.id.blueECG);
+		
+		pedometerState = (Switch)findViewById(R.id.bluePedometerState);
+		postureState = (Switch)findViewById(R.id.bluePostureState);
+		ECGState = (Switch)findViewById(R.id.blueECGState);
 		
 		setUpPreferences();
 		restorePreferences();
@@ -181,16 +186,18 @@ public class Bluetooth extends Activity{
 
 			@Override
 			public void onClick(View v) {
-				if (blueECG.isChecked()){
+				if (ECGState.isChecked()){
+					ECGState.setChecked(false);
+					
+					editor.putBoolean("blueECG", false);
+					editor.commit();
+					
+					stopService(ECGintent);
+				} else{
+					ECGState.setChecked(true);
 					editor.putBoolean("blueECG", true);
 					editor.commit();
 					startService(ECGintent);
-					
-					
-				} else{
-					editor.putBoolean("blueECG", false);
-					editor.commit();
-					stopService(ECGintent);
 				}
 				
 			}
@@ -207,8 +214,8 @@ public class Bluetooth extends Activity{
     }
 	
 	public void restorePreferences(){
+		ECGState.setChecked(settings.getBoolean("blueECG", false));
 		
-		blueECG.setChecked(settings.getBoolean("blueECG", false));
 	}
 	
 	}

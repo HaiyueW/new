@@ -9,6 +9,8 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
+
+
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -18,10 +20,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 
 public class btMateService extends Service {
+	
+	 public SharedPreferences settings;
+	 public SharedPreferences.Editor editor;
 	 private final String TAG = "btMateService";
 	 private BluetoothManager mBluetoothManager;
 	 private BluetoothAdapter mBluetoothAdapter;
@@ -60,6 +68,8 @@ public class btMateService extends Service {
 	public void onDestroy(){
 		unregisterReceiver(mReceiver);
 		unregisterReceiver(mACTReceiver);
+		
+		if (mSocket != null){
 		try {
 			mSocket.close();
 			Log.d(TAG,"mSocket closing");
@@ -67,14 +77,22 @@ public class btMateService extends Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}
+		
+		if(mateRead != null){
 		 Log.d(TAG,"mateRead Thread closing");
 		 mateRead.writeByte((char) 0xFF);
 		 mateRead.cancel();
 		 activityState = false;
+		}
+		 
+		
 	}
 	
 	@Override
 	  public int onStartCommand(Intent intent, int flags, int startId) {
+		setUpPreferences();
+		
 		activityState = false;
 		mateConnected = connectState.DISCONNECTED;
 		
@@ -88,6 +106,18 @@ public class btMateService extends Service {
 		 
 		registerReceiver(mReceiver, filter);
 		mBluetoothAdapter.startDiscovery();
+		
+		Handler h = new Handler(Looper.getMainLooper());
+		h.postDelayed(new Runnable(){
+			@Override
+			public void run(){
+				 if (mBluetoothAdapter.isDiscovering())
+			    		mBluetoothAdapter.cancelDiscovery();
+				 
+				 Log.e(TAG,"turned discovery off");
+			}
+		},3000);
+		
 		
 		IntentFilter intentFilter = new IntentFilter("BTMATE_EVENT");
        registerReceiver(mACTReceiver, intentFilter);
@@ -322,6 +352,9 @@ public class btMateService extends Service {
 			}
 	        try {
 	            mmSocket.close();
+	            
+	            editor.putBoolean("blueECG", false);
+				editor.commit();
 	        } catch (IOException e) { }
 	        
 	        if (saveData){
@@ -373,5 +406,11 @@ public class btMateService extends Service {
     
 		};
 	};
+	
+	
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("bluetoothPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
 
 }

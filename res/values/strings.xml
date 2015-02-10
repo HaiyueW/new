@@ -52,7 +52,7 @@
     <string name="title_activity_bluetooth">Bluetooth</string>
     <string name="blueon">Turn On</string>
     <string name="bluevisible">Get Visible</string>
-    <string name="blueposture">Posture Service</string>
+    <string name="blueposture">Posture</string>
     <string name="bluepair">Paired Devices</string>
     <string name="blueoff">Turn Off</string>
     <string name="bluetooth">Bluetooth Setting</string>
@@ -78,7 +78,7 @@
     <string name="pedo_stop">Stop</string>
     <string name="pedo_speed">Walking Speed</string>
     <string name="pedo_speednum">0.0</string>
-    <string name="bluepedometer">Pedometer Service</string>
+    <string name="bluepedometer">Pedometer</string>
     <string name="bluemain">Main Menu</string>
 
 </resources>

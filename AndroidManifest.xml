@@ -76,7 +76,8 @@
         <activity
             android:name=".Bluetooth"
             android:label="@string/title_activity_bluetooth" 
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            >
         </activity>
     </application>
 

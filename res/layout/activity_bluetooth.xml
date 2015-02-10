@@ -72,31 +72,73 @@
                 android:id="@+id/bluemain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bluemain" 
+                android:paddingBottom="10dp"
+                android:text="@string/bluemain"
                 android:textSize="20sp" />
 
-            <ToggleButton
-                android:id="@+id/blueECG"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="66dp"
-                android:text="ECG Service"
-                android:textOff="ECG Service: disconnected"
-                android:textOn="ECG Service: connected"
-                android:textSize="20sp" />
+                android:layout_height="150dp"
+                android:layout_marginTop = "30dp" >
 
-            <Button
-                android:id="@+id/blueposture"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/blueposture"
-                android:textSize="20sp" />
+                <Button
+                    android:id="@+id/blueECG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="170dip"
+                    android:text="ECG"
+                    android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/bluepedometer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/bluepedometer" 
-                android:textSize="20sp" />
+                <Switch
+                    android:id="@+id/blueECGState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignBaseline="@+id/blueECG"
+                    android:layout_alignBottom="@+id/blueECG"
+                    android:layout_toRightOf="@+id/blueECG"
+                    android:clickable="false"
+                   
+                    android:longClickable="false" />
+
+                <Button
+                    android:id="@+id/blueposture"
+                    android:layout_width="170dip"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/blueECGState"
+                    android:minWidth="170dip"
+                    android:text="@string/blueposture"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/bluepedometer"
+                    android:layout_width="170dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/blueposture"
+                    android:text="@string/bluepedometer"
+                    android:textSize="20sp" />
+
+                <Switch
+                    android:id="@+id/bluePostureState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/bluepedometer"
+                    android:layout_alignBottom="@+id/bluepedometer"
+                    android:layout_alignLeft="@+id/blueECGState"  
+                    android:clickable="false"
+                    android:longClickable="false"/>
+
+                <Switch
+                    android:id="@+id/bluePedometerState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/blueECGState"
+                    android:layout_centerVertical="true"
+                    android:clickable="false"
+                    android:longClickable="false" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
