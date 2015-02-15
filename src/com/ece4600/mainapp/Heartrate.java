@@ -91,7 +91,9 @@ private  Chronometer timer;
 		
 		startButton = (Button)findViewById(R.id.startButton);
 		stopButton = (Button)findViewById(R.id.stopButton);
+		backButton = (Button)findViewById(R.id.returnheart);
 		recordButton =(ToggleButton)findViewById(R.id.recordButton);
+		
 		
 		line.initialize();
 		currentX = 0.0f;
@@ -209,6 +211,15 @@ private  Chronometer timer;
 			}
 		});
 		
+		backButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(Heartrate.this, MainActivity.class));
+				finish();
+				
+			}
+		});
 		
 		
 	}

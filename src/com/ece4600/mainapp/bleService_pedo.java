@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -22,6 +23,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class bleService_pedo extends Service {
+	 public SharedPreferences settings;
+	 public SharedPreferences.Editor editor;
+	
 	private final static String TAG = bleService_pedo.class.getSimpleName();
 	private final static String DEBUG = "DEBUG";
 	private BluetoothManager mBluetoothManager1;
@@ -109,6 +113,8 @@ public class bleService_pedo extends Service {
 		MyThread myThread = new MyThread(); // creating a new thread?
 		myThread.start();
 		
+		setUpPreferences();
+		
 		int state = myBluetoothAdapter.getState();
 		if (state == 10){
 			final Toast toast = Toast.makeText(bleService_pedo.this,"Bluetooth is OFF!", Toast.LENGTH_SHORT);
@@ -118,6 +124,7 @@ public class bleService_pedo extends Service {
 		           @Override
 		           public void run() {
 		               toast.cancel(); 
+		               turnOffSelf();
 		           }
 		    }, 500);
 		}
@@ -135,7 +142,8 @@ public class bleService_pedo extends Service {
 	@Override
 	public void onDestroy() { // disconnects the sensortag connection after
 								// quitting service
-		mConnectedGatt3.disconnect();
+		if (mConnectedGatt3 != null)
+			mConnectedGatt3.disconnect();
 		mBluetoothAdapter1.stopLeScan(mLeScanCallback3);
 	}
 
@@ -222,6 +230,8 @@ public class bleService_pedo extends Service {
 		@Override
 		public void run() {
 			stopScan();
+			if (mSensor3 == mSensorState.DISCONNECTED)
+				turnOffSelf();
 		}
 	};
 
@@ -374,6 +384,18 @@ public class bleService_pedo extends Service {
 			c = mConnectedGatt3.getService(UUID_ACC_SERV).getCharacteristic(UUID_ACC_DATA);
 			mConnectedGatt3.readCharacteristic(c);
 		}
+	}
+	
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("bluetoothPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
+	
+	
+	public void turnOffSelf(){
+		 editor.putBoolean("bluePedo", false);
+		 editor.commit();
+		 stopSelf();
 	}
 
 }

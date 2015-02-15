@@ -8,112 +8,188 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ece4600.mainapp.Posture" >
 
-    <Button
-        android:id="@+id/returnpost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/subpost"
-        android:layout_alignParentBottom="true"
-        android:text="@string/returnpost" />
-
-    <TextView
-        android:id="@+id/subpost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/subpost"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/acc_x1"
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subpost"
-        android:layout_marginTop="30dp"
-        android:text="TextView" />
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
 
-    <TextView
-        android:id="@+id/acc_z1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/acc_y1"
-        android:layout_below="@+id/acc_y1"
-        android:text="TextView" />
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    <TextView
-        android:id="@+id/acc_y1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/acc_x1"
-        android:layout_below="@+id/acc_x1"
-        android:text="TextView" />
+            <TextView
+                android:id="@+id/device1Heading"
+                android:layout_width="match_parent"
+        		android:layout_height="match_parent"
+                
+                android:text="Device 1 Average Measurements:" />
+        </TableRow>
 
-    <TextView
-        android:id="@+id/device1Heading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/acc_x1"
-        android:layout_below="@+id/subpost"
-        android:layout_marginTop="14dp"
-        android:text="Device 1 Average Measurements:" />
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+          >
 
-    <TextView
-        android:id="@+id/device2Heading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/acc_z1"
-        android:layout_below="@+id/acc_z1"
-        android:text="Device 2 Average Measurements:" />
+            <TextView
+                android:id="@+id/acc_x1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="x = 0.00" />
+        </TableRow>
 
-    <TextView
-        android:id="@+id/acc_x2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/device2Heading"
-        android:layout_below="@+id/device2Heading"
-        android:text="TextView" />
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+          >
 
-    <TextView
-        android:id="@+id/acc_y2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/acc_x2"
-        android:layout_below="@+id/acc_x2"
-        android:text="TextView" />
+            <TextView
+                android:id="@+id/acc_y1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="y = 0.00" />
+        </TableRow>
 
-    <TextView
-        android:id="@+id/acc_z2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/acc_y2"
-        android:layout_below="@+id/acc_y2"
-        android:text="TextView" />
+        <TableRow
+            android:id="@+id/tableRow4"
+			android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+             >
 
-    <TextView
-        android:id="@+id/postureHeading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/acc_z2"
-        android:layout_below="@+id/acc_z2"
-        android:text="Determined Posture:" />
+            <TextView
+                android:id="@+id/acc_z1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="z = 0.00" />
+        </TableRow>
 
-    <TextView
-        android:id="@+id/postureText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/postureHeading"
-        android:layout_below="@+id/postureHeading"
-        android:text="TextView" />
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    <ImageView
-        android:id="@+id/displayIMG"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/postureText"
-        android:layout_below="@+id/postureText"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="78dp"
-        android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/device2Heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Device 2 Average Measurements:" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
+			android:layout_width="match_parent"
+      	    android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/acc_x2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="x = 0.00" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow7"
+           	android:layout_width="match_parent"
+       	    android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/acc_y2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="y = 0.00" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow8"
+			android:layout_width="match_parent"
+       	    android:layout_height="match_parent"
+           >
+
+            <TextView
+                android:id="@+id/acc_z2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="z = 0.00" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow9"
+			android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/postureHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Determined Posture:" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow10"
+			android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/postureText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="----" 
+                />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow11"
+			android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             >
+
+            <ImageView
+                android:id="@+id/displayIMG"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" 
+                android:layout_weight="1"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow12"
+			android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+           >
+
+            <LinearLayout
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow13"
+			android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+            >
+
+            <Button
+                android:id="@+id/returnpost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/returnpost" 
+                android:layout_weight="1" />
+        </TableRow>
+    </TableLayout>
 
 </RelativeLayout>

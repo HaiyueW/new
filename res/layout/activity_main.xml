@@ -6,7 +6,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    
     tools:context="com.ece4600.mainapp.MainActivity" >
 
     <ImageView
@@ -25,79 +24,157 @@
         android:layout_alignTop="@+id/photo"
         android:layout_toRightOf="@+id/photo"
         android:text="@string/name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/photo"
-        android:layout_marginBottom="24dp"
-        android:layout_toRightOf="@+id/photo"
-        android:text="@string/age"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/age"
-        android:layout_alignLeft="@+id/age"
-        android:layout_marginBottom="14dp"
+        android:layout_alignLeft="@+id/name"
+        android:layout_below="@+id/name"
         android:text="@string/gender"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/phone"
+        android:id="@+id/DOB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/photo"
-        android:layout_below="@+id/photo"
-        android:text="@string/phone"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_below="@+id/gender"
+        android:layout_toRightOf="@+id/photo"
+        android:text="@string/DOB"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/login_info"
+        android:id="@+id/weightMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/phone"
-        android:layout_below="@+id/phone"
-        android:layout_marginTop="14dp"
-        android:text="@string/info"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_below="@+id/DOB"
+        android:layout_toRightOf="@+id/photo"
+        android:text="WEIGHT:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/pedo"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_info"
-        android:layout_alignParentBottom="true"
-        android:text="@string/pedo" />
+        android:layout_below="@+id/photo" >
 
-    <Button
-        android:id="@+id/heart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/pedo"
-        android:layout_alignLeft="@+id/pedo"
-        android:layout_marginBottom="14dp"
-        android:text="@string/heart" />
+        <TableRow
+            android:id="@+id/tableRow3"
+           
+            android:layout_width ="match_parent"
+            android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/loca"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/loca" />
+            <TextView
+                android:id="@+id/postureHeadingMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posture Summary:"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp" />
+        </TableRow>
 
-    <Button
-        android:id="@+id/post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/heart"
-        android:layout_alignBottom="@+id/heart"
-        android:layout_alignRight="@+id/loca"
-        android:text="@string/post" />
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width ="match_parent" 
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:id="@+id/posturePie"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+             >
+
+            <TextView
+                android:id="@+id/pedoHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Steps Taken:"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pedoSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0000"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+           >
+
+            <TextView
+                android:id="@+id/locationHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/pedo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/pedo" />
+
+            <Button
+                android:id="@+id/loca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/loca" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            
+             >
+
+            <Button
+                android:id="@+id/post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/post" />
+
+            <Button
+                android:id="@+id/heart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/heart" />
+        </TableRow>
+    </TableLayout>
 
 </RelativeLayout>

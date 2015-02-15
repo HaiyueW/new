@@ -93,17 +93,6 @@
             android:text="@string/bluepedometer"
             android:textSize="20sp" />
 
-        <Switch
-            android:id="@+id/bluePostureState"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/bluepedometer"
-            android:layout_alignBottom="@+id/bluepedometer"
-            android:layout_alignLeft="@+id/blueECGState"
-            android:clickable="false"
-            android:enabled="false"
-            android:longClickable="false" />
-
         <Button
             android:id="@+id/blueposture"
             android:layout_width="400dip"
@@ -124,15 +113,25 @@
             android:longClickable="false" />
 
         <Switch
-            android:id="@+id/bluePedometerState"
+            android:id="@+id/bluePostureState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/blueposture"
             android:layout_alignBottom="@+id/blueposture"
-            android:layout_alignLeft="@+id/blueECGState"
+            android:layout_toRightOf="@+id/blueposture"
             android:clickable="false"
-            android:enabled="false"
             android:longClickable="false" />
+
+        <Switch
+            android:id="@+id/bluePedometerState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bluepedometer"
+            android:layout_alignBottom="@+id/bluepedometer"
+            android:layout_toRightOf="@+id/bluepedometer"
+            android:clickable="false"
+            android:longClickable="false" />
+
     </RelativeLayout>
 
 </RelativeLayout>

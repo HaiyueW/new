@@ -19,6 +19,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -28,6 +29,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class bleService extends Service{
+	 public SharedPreferences settings;
+	 public SharedPreferences.Editor editor;
+	 
+	 
     private final static String TAG = bleService.class.getSimpleName();
     private final static String DEBUG = "DEBUG";
 	private BluetoothManager mBluetoothManager;
@@ -116,6 +121,8 @@ public class bleService extends Service{
 		MyThread myThread = new MyThread(); // creating a new thread?
 		myThread.start();
 		
+		setUpPreferences();
+		
 		int state = myBluetoothAdapter.getState();
 		if (state == 10){
 			final Toast toast = Toast.makeText(bleService.this,"Bluetooth is OFF!", Toast.LENGTH_SHORT);
@@ -125,6 +132,7 @@ public class bleService extends Service{
 		           @Override
 		           public void run() {
 		               toast.cancel(); 
+		               turnOffSelf();
 		           }
 		    }, 500);
 		}
@@ -135,6 +143,7 @@ public class bleService extends Service{
 		 
 	    return  super.onStartCommand(intent, flags, startId);
 	  }
+	
 	
 	
 //	private Runnable test = new Runnable() {
@@ -159,8 +168,12 @@ public class bleService extends Service{
 	}
 	@Override
 	public void onDestroy(){ // disconnects the sensortag connection after quitting service
+		
+	if (mConnectedGatt1 != null)	
 		mConnectedGatt1.disconnect();
+	if (mConnectedGatt2 != null)	
 		mConnectedGatt2.disconnect();
+	if (mBluetoothAdapter != null)	
 		mBluetoothAdapter.stopLeScan(mLeScanCallback);
 	}
 	 
@@ -279,12 +292,15 @@ private BluetoothAdapter.LeScanCallback mLeScanCallback =
 public void stopScan(){
 	Log.i(DEBUG, "Stop scan");
 	mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	
 }
 
 private Runnable mStopScanRunnable = new Runnable() {
     @Override
     public void run() {
         stopScan();
+     if (mSensor1 == mSensorState.DISCONNECTED)   
+        turnOffSelf();
     }
 };
  	
@@ -659,6 +675,18 @@ private void readDevice2(){
   		new File(PATH).mkdirs();
   	}
 
+	
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("bluetoothPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
+	
+	
+	public void turnOffSelf(){
+		 editor.putBoolean("bluePosture", false);
+		 editor.commit();
+		 stopSelf();
+	}
 };
 
 

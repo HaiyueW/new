@@ -97,7 +97,6 @@
                     android:layout_alignBottom="@+id/blueECG"
                     android:layout_toRightOf="@+id/blueECG"
                     android:clickable="false"
-                   
                     android:longClickable="false" />
 
                 <Button
@@ -123,18 +122,18 @@
                     android:id="@+id/bluePostureState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/bluepedometer"
-                    android:layout_alignBottom="@+id/bluepedometer"
-                    android:layout_alignLeft="@+id/blueECGState"  
+                    android:layout_alignLeft="@+id/blueECGState"
+                    android:layout_centerVertical="true"
                     android:clickable="false"
-                    android:longClickable="false"/>
+                    android:longClickable="false" />
 
                 <Switch
                     android:id="@+id/bluePedometerState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/blueECGState"
-                    android:layout_centerVertical="true"
+                    android:layout_alignBaseline="@+id/bluepedometer"
+                    android:layout_alignBottom="@+id/bluepedometer"
+                    android:layout_alignLeft="@+id/bluePostureState"
                     android:clickable="false"
                     android:longClickable="false" />
 

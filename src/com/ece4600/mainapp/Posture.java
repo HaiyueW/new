@@ -1,6 +1,8 @@
 package com.ece4600.mainapp;
 
 
+import org.achartengine.GraphicalView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -22,11 +24,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 //import android.widget.Toast;
 
 
 public class Posture extends Activity {
+	
 	
 	private SharedPreferences mSharedPrefs;
 	private BluetoothAdapter myBluetoothAdapter;
@@ -46,13 +50,25 @@ public class Posture extends Activity {
 	
 	Bitmap posture_states[] = new Bitmap[4];
 	
+	private PosturePie pieChart = new PosturePie();
+	private static Context context;
+	
 	
 	@Override
 	
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		//bluetooth stuff starts here
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posture);
+		
+		
+		context = getBaseContext();
+		pieChart.initialize();
+		pieChart.updateData();
+		
+		paintGraph();
+		
 		myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		bluetoothTest();
 		setupMessageButton();
@@ -74,11 +90,13 @@ public class Posture extends Activity {
 		
 		Resources res = getResources();
 		
-		posture_states[0] = BitmapFactory.decodeResource(getResources(), R.drawable.stand);
-		posture_states[1] = BitmapFactory.decodeResource(getResources(), R.drawable.sit);
-		posture_states[2] = BitmapFactory.decodeResource(getResources(), R.drawable.bend);
-		posture_states[3] = BitmapFactory.decodeResource(getResources(), R.drawable.laydown);
+		posture_states[0] = BitmapFactory.decodeResource(getResources(), R.drawable.standmpi);
+		posture_states[1] = BitmapFactory.decodeResource(getResources(), R.drawable.sitmpi);
+		posture_states[2] = BitmapFactory.decodeResource(getResources(), R.drawable.bendmpi);
+		posture_states[3] = BitmapFactory.decodeResource(getResources(), R.drawable.laydownmpi);
 		
+		img.setImageBitmap(posture_states[0]);
+		postureText.setText("Standing");
 	
         IntentFilter intentFilter = new IntentFilter("POSTURE_EVENT");
         registerReceiver(broadcastRx, intentFilter);
@@ -226,13 +244,6 @@ public class Posture extends Activity {
 	        	}
 	        	
 	        	if (posture != null){
-	        	/*if (posture.equals("VERTICAL"))
-	        	{
-	        		img.setImageBitmap(posture_states[1]);
-	        	}
-	        	else if(posture.equals("HORIZONTAL")){
-	        		img.setImageBitmap(posture_states[0]);
-	        	}*/
 	        		
 	        		if (posture.equals("STAND")){
 	        			img.setImageBitmap(posture_states[0]);
@@ -268,7 +279,17 @@ public class Posture extends Activity {
 	        
 	    }
 	};
-	
+	public void paintGraph(){
+		//Get Graph information:
+		GraphicalView lineView = pieChart.getView(context);
+		//Get reference to layout:
+		LinearLayout layout =(LinearLayout)findViewById(R.id.pieChart);
+		//clear the previous layout:
+		//layout.removeAllViews();
+		//add new graph:
+		if (layout != null)
+				layout.addView(lineView);
+	}
 	
 	
 	

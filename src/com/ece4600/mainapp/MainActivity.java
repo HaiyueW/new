@@ -1,10 +1,13 @@
 package com.ece4600.mainapp;
 
+import org.achartengine.GraphicalView;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,12 +16,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
 	public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
-
+	private PosturePie pieChart = new PosturePie();
+	private static Context context;
+	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
+	
+	TextView name, sex, dob, weight;
+	
 	private BroadcastReceiver broadcastRx = new BroadcastReceiver() {
 	    @Override
 	    public void onReceive(Context context, Intent intent) {
@@ -31,6 +43,8 @@ public class MainActivity extends Activity {
 	    	    Toast.LENGTH_LONG).show();
 				//Log.i("MainActivity", msg);
 	        //}
+	    	  
+	    
 	    }
 	};
 	
@@ -38,6 +52,13 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); 
+        
+    	context = getBaseContext();
+		pieChart.initialize();
+		pieChart.updateData();
+		paintGraph();
+		
+		
         setupMessageButton1();
         setupMessageButton2();
         setupMessageButton3();
@@ -53,6 +74,14 @@ public class MainActivity extends Activity {
         //Start our own service
        // Intent intent = new Intent(MainActivity.this, bleService.class);
         //startService(intent);
+        
+        name = (TextView)findViewById(R.id.name);
+        sex = (TextView)findViewById(R.id.gender);
+        dob = (TextView)findViewById(R.id.DOB);
+        weight = (TextView)findViewById(R.id.weightMain);
+        
+  	  	setUpPreferences();
+  	  	restorePreferences();
         
     }
 
@@ -118,27 +147,18 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
     	super.onOptionsItemSelected(item);
     	switch(item.getItemId()){
-    	case R.id.mainmenu_heart:
-    		startActivity(new Intent(this, Heartrate.class));
-    		finish();
-    		break;
-    	case R.id.mainmenu_pedo:
-    		startActivity(new Intent(this, Pedometer.class));
-    		finish();
-    		break;
-    	case R.id.mainmenu_loca:
-    		startActivity(new Intent(this, Location.class));
-    		finish();
-    		break;
-    	case R.id.mainmenu_post:
-    		startActivity(new Intent(this, Posture.class));
-    		finish();
-    		break;
+  
     	case R.id.mainmenu_logout:
     		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().clear().commit();
     		startActivity(new Intent(this, Login.class));
     		finish();
     		break;
+    	case R.id.editProfile:
+    		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().clear().commit();
+    		startActivity(new Intent(this, EditUserSettings.class));
+    		finish();
+    		break;
+    		
     	}
         int id = item.getItemId();
         if (id == R.id.action_settings) {
@@ -146,4 +166,30 @@ public class MainActivity extends Activity {
         }
         return true; 
     }
+    
+    public void paintGraph(){
+		//Get Graph information:
+		GraphicalView lineView = pieChart.getView(context);
+		//Get reference to layout:
+		LinearLayout layout =(LinearLayout)findViewById(R.id.posturePie);
+		//clear the previous layout:
+		//layout.removeAllViews();
+		//add new graph:
+		if (layout != null)
+				layout.addView(lineView);
+	}
+    
+    
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
+	
+	public void restorePreferences(){
+		name.setText("NAME: " + settings.getString("name", "Mike Jones"));
+		dob.setText("D.O.B.: " + settings.getString("DOB", "MM/DD/YYYY"));
+		weight.setText("WEIGHT: " + settings.getString("weight", "xxx"));
+		sex.setText("GENDER: " + settings.getString("sex", "Male"));
+		
+	}
 }

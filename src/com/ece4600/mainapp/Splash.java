@@ -33,7 +33,8 @@ public class Splash extends Activity {
 					finish();
 				}
 				else{
-					startActivity(new Intent(Splash.this, Login.class));
+					//TODO change back to login screen
+					startActivity(new Intent(Splash.this, Bluetooth.class));
 					finish();
 				}
 			}

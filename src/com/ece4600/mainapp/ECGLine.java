@@ -15,8 +15,8 @@ import android.text.format.Time;
 
 public class ECGLine {
 
-	private static final double yMin = -1000.0;
-	private static final double yMax = 2000.0;
+	private static final double yMin = -200.0;
+	private static final double yMax = 1100.0;
 	private static final int windowSize = 200;
 	
 	//Just for one line
@@ -102,6 +102,7 @@ public class ECGLine {
 		mRenderer.setShowLegend(false);
 		mRenderer.setYAxisMax(yMax);
 		mRenderer.setYAxisMin(yMin);
+	
 		//mRenderer.setXAxisMax(windowSize);
 		//mRenderer.setXAxisMin(0);
 		//mRenderer.set

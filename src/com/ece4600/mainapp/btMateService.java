@@ -30,6 +30,7 @@ public class btMateService extends Service {
 	
 	 public SharedPreferences settings;
 	 public SharedPreferences.Editor editor;
+	 
 	 private final String TAG = "btMateService";
 	 private BluetoothManager mBluetoothManager;
 	 private BluetoothAdapter mBluetoothAdapter;
@@ -48,6 +49,7 @@ public class btMateService extends Service {
 	 private ReadThread mateRead;
 	 
 	 public long pastMsTime, nowMsTime, duration;
+	 private final long discoveryTime = 5000;
 	 
 	 public  enum connectState {CONNECTED, DISCONNECTED};
 	 public  enum deviceState {IDLE, READ};
@@ -69,6 +71,8 @@ public class btMateService extends Service {
 		unregisterReceiver(mReceiver);
 		unregisterReceiver(mACTReceiver);
 		
+		
+		
 		if (mSocket != null){
 		try {
 			mSocket.close();
@@ -86,7 +90,11 @@ public class btMateService extends Service {
 		 activityState = false;
 		}
 		 
-		
+		if ((mateConnected == connectState.DISCONNECTED)){
+			 editor.putBoolean("blueECG", false);
+			 editor.commit();
+			 
+		 }
 	}
 	
 	@Override
@@ -115,8 +123,14 @@ public class btMateService extends Service {
 			    		mBluetoothAdapter.cancelDiscovery();
 				 
 				 Log.e(TAG,"turned discovery off");
+				 
+				 if ((mateConnected == connectState.DISCONNECTED)){
+					 editor.putBoolean("blueECG", false);
+					 editor.commit();
+					 stopSelf();
+				 }
 			}
-		},3000);
+		},discoveryTime);
 		
 		
 		IntentFilter intentFilter = new IntentFilter("BTMATE_EVENT");

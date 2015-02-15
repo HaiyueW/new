@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -33,6 +34,7 @@ public class Bluetooth extends Activity{
     private final String device3_MAC = "BC:6A:29:AB:61:CF";
     
 	public SharedPreferences settings;
+	public OnSharedPreferenceChangeListener settingsListen;
 	public SharedPreferences.Editor editor;
 	private boolean blueState;
     
@@ -65,12 +67,22 @@ public class Bluetooth extends Activity{
 		initButtons();
 		
 		context = this;
-
+		
+		settingsListen = new OnSharedPreferenceChangeListener(){
+		      public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		    	  ECGState.setChecked(settings.getBoolean("blueECG", false));
+		    	  postureState.setChecked(settings.getBoolean("bluePosture", false));
+		    	  pedometerState.setChecked(settings.getBoolean("bluePedo", false));
+		      }
+		};
+		
+		settings.registerOnSharedPreferenceChangeListener(settingsListen);
 		
 	}
 	
 	 protected void onDestroy() {
 	        super.onDestroy();
+	        settings.unregisterOnSharedPreferenceChangeListener(settingsListen);
 	    }
 
 
@@ -130,8 +142,24 @@ public class Bluetooth extends Activity{
 			@Override
 			public void onClick(View v) {
 				 if(myBluetoothAdapter!=null){
-		        Intent intent = new Intent(Bluetooth.this, bleService.class);
-		        startService(intent);
+					 
+					 
+		        Intent Postureintent = new Intent(Bluetooth.this, bleService.class);
+		        
+		        if (postureState.isChecked()){
+					postureState.setChecked(false);
+					
+					editor.putBoolean("bluePosture", false);
+					editor.commit();
+					
+					stopService(Postureintent);
+				} else{
+					postureState.setChecked(true);
+					editor.putBoolean("bluePosture", true);
+					editor.commit();
+					startService(Postureintent);
+				}
+		        
 				 }
 			}     
 	    });
@@ -140,7 +168,22 @@ public class Bluetooth extends Activity{
 			@Override
 			public void onClick(View v) {
 				 if(myBluetoothAdapter!=null){
+					 
 		        Intent pedointent = new Intent(Bluetooth.this, bleService_pedo.class);
+		        if (pedometerState.isChecked()){
+					pedometerState.setChecked(false);
+					
+					editor.putBoolean("bluePedo", false);
+					editor.commit();
+					
+					stopService(pedointent);
+				} else{
+					pedometerState.setChecked(true);
+					editor.putBoolean("bluePedo", true);
+					editor.commit();
+					startService(pedointent);
+				}
+		        
 		        startService(pedointent);
 				 }
 			}     
@@ -215,6 +258,8 @@ public class Bluetooth extends Activity{
 	
 	public void restorePreferences(){
 		ECGState.setChecked(settings.getBoolean("blueECG", false));
+		postureState.setChecked(settings.getBoolean("bluePosture", false));
+		pedometerState.setChecked(settings.getBoolean("bluePedo", false));
 		
 	}
 	

@@ -12,8 +12,8 @@
         android:id="@+id/login_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/phone"
-        android:layout_below="@+id/phone"
+        android:layout_alignLeft="@+id/weightSmall"
+        android:layout_below="@+id/weightSmall"
         android:layout_marginTop="14dp"
         android:text="@string/info"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -52,7 +52,7 @@
         android:text="@string/heart" />
 
     <TextView
-        android:id="@+id/phone"
+        android:id="@+id/weightSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/gender"
@@ -66,13 +66,13 @@
         android:id="@+id/gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/phone"
+        android:layout_alignLeft="@+id/weightSmall"
         android:layout_alignTop="@+id/photo"
         android:text="@string/gender"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/age"
+        android:id="@+id/DOB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/name"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Profile_v1</string>
+    <string name="app_name">wellNode</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="photo">photo</string>
@@ -14,7 +14,7 @@
     <string name="heart">Heart Rate</string>
     <string name="loca">Location</string>
     <string name="post">Posture</string>
-    <string name="title_activity_heartrate">Heartrate</string>
+    <string name="title_activity_heartrate">Electrocardiogram</string>
     <string name="title_activity_login">Login</string>
     <string name="subheart">Electrocardiogram</string>
     <string name="returnheart">Return</string>
@@ -80,5 +80,9 @@
     <string name="pedo_speednum">0.0</string>
     <string name="bluepedometer">Pedometer</string>
     <string name="bluemain">Main Menu</string>
+    <string name="aboutString">About</string>
+    <string name="editProfile">Edit profile</string>
+    <string name="logOutString">Log out</string>
+    <string name="DOB">D.O.B.: MM/DD/YYYY</string>
 
 </resources>
