@@ -11,16 +11,16 @@ import android.view.View;
 import android.widget.Button;
 
 public class Splash extends Activity {
-	String user;
-	String pass;
+//	String user;
+//	String pass;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		startScreen();
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		user = preferences.getString("user", "");
-		pass = preferences.getString("pass", "");		
+//		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//		user = preferences.getString("user", "");
+//		pass = preferences.getString("pass", "");		
 	}
 	
     private void startScreen(){
@@ -28,16 +28,21 @@ public class Splash extends Activity {
     	messageButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(user.equals("user") && pass.equals("pass")){
-					startActivity(new Intent(Splash.this, Bluetooth.class));
-					finish();
-				}
-				else{
-					//TODO change back to login screen
-					startActivity(new Intent(Splash.this, Bluetooth.class));
-					finish();
-				}
+				//Toast.makeText(MainActivity.this, "Pedometer", Toast.LENGTH_LONG).show();
+				startActivity(new Intent(Splash.this, Login.class));
+				finish();
 			}
+//			public void onClick(View v) {
+//				if(user.equals("user") && pass.equals("pass")){
+//					startActivity(new Intent(Splash.this, Bluetooth.class));
+//					finish();
+//				}
+//				else{
+//					//TODO change back to login screen
+//					startActivity(new Intent(Splash.this, Bluetooth.class));
+//					finish();
+//				}
+//			}
 		});	
     }
 

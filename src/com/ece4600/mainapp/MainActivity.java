@@ -23,14 +23,14 @@ import android.widget.Toast;
  
 
 public class MainActivity extends Activity {
-	public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
+//	public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
 	private PosturePie pieChart = new PosturePie();
 	private static Context context;
 	
-	public SharedPreferences settings;
-	public SharedPreferences.Editor editor;
+//	public SharedPreferences settings;
+//	public SharedPreferences.Editor editor;
 	
-	TextView name, sex, dob, weight;
+	TextView  dob, weight;
 	
 	//public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
 	private TextView user_name;
@@ -58,16 +58,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); 
         
-    	context = getBaseContext();
-		pieChart.initialize();
-		pieChart.updateData();
-		paintGraph();
-		
-		
-
+        
         //database related  starts here
         user_name = (TextView)findViewById(R.id.name);
-        user_address = (TextView)findViewById(R.id.address);
+        user_address = (TextView)findViewById(R.id.gender);
         
 
         
@@ -83,8 +77,12 @@ public class MainActivity extends Activity {
         
         
         //database related ends here
-        
-        
+//        
+    	context = getBaseContext();
+		pieChart.initialize();
+		pieChart.updateData();
+		paintGraph();
+
         setupMessageButton1();
         setupMessageButton2();
         setupMessageButton3();
@@ -107,13 +105,13 @@ public class MainActivity extends Activity {
        // Intent intent = new Intent(MainActivity.this, bleService.class);
         //startService(intent);
         
-        name = (TextView)findViewById(R.id.name);
-        sex = (TextView)findViewById(R.id.gender);
+//        name = (TextView)findViewById(R.id.name);
+//        sex = (TextView)findViewById(R.id.gender);
         dob = (TextView)findViewById(R.id.DOB);
         weight = (TextView)findViewById(R.id.weightMain);
         
-  	  	setUpPreferences();
-  	  	restorePreferences();
+  	  //	setUpPreferences();
+  	  //	restorePreferences();
         
     }
 
@@ -210,18 +208,18 @@ public class MainActivity extends Activity {
 		if (layout != null)
 				layout.addView(lineView);
 	}
-    
-    
-	public void setUpPreferences(){
-    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
-    	editor = settings.edit();
-    }
-	
-	public void restorePreferences(){
-		name.setText("NAME: " + settings.getString("name", "Mike Jones"));
-		dob.setText("D.O.B.: " + settings.getString("DOB", "MM/DD/YYYY"));
-		weight.setText("WEIGHT: " + settings.getString("weight", "xxx"));
-		sex.setText("GENDER: " + settings.getString("sex", "Male"));
-		
-	}
+//    
+//    
+//	public void setUpPreferences(){
+//    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
+//    	editor = settings.edit();
+//    }
+//	
+//	public void restorePreferences(){
+//		name.setText("NAME: " + settings.getString("name", "Mike Jones"));
+//		dob.setText("D.O.B.: " + settings.getString("DOB", "MM/DD/YYYY"));
+//		weight.setText("WEIGHT: " + settings.getString("weight", "xxx"));
+//		sex.setText("GENDER: " + settings.getString("sex", "Male"));
+//		
+//	}
 }
