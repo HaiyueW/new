@@ -34,6 +34,9 @@ public class Login extends Activity implements OnClickListener{
 	Button login;
 	Button cancel;
 	
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
+	
 	//database related constants
 	
 	JSONParser jsonParser = new JSONParser();
@@ -46,6 +49,10 @@ public class Login extends Activity implements OnClickListener{
     
     // ---
     
+    
+
+    
+    
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +64,22 @@ public class Login extends Activity implements OnClickListener{
 		cancel = (Button)findViewById(R.id.cancel);
 		login.setOnClickListener(this);
 		cancel.setOnClickListener(this);
+		setUpPreferences();
 	}
+
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
 
 @Override
 public void onClick(View v) {
 //	String user = txtuser.getText().toString();
 //	String pass = txtpass.getText().toString();
 //	
+	
+
+	
 	switch(v.getId()){
 	case R.id.login:
 		
@@ -159,8 +175,11 @@ class AttemptLogin extends AsyncTask<String, String, String> {
          	Log.d("Login Successful!", json.toString());
          	//Intent i = new Intent(Login.this, ReadComments.class);
          	Intent i = new Intent(getApplicationContext(), MainActivity.class);
-         	i.putExtra("database_user",username_result);
-         	i.putExtra("database_address",user_address);
+//         	i.putExtra("database_user",username_result); // this is where the perference is sent through . need to see how perference is setup. 
+//         	i.putExtra("database_address",user_address);
+        	editor.putString("name", username_result);
+        	editor.putString("weight", user_address);
+        	editor.commit();
          	finish();
 				startActivity(i);
          	return "welcome " + json.getString(TAG_USERNAME) + " your address is :" + user_address;
@@ -176,6 +195,10 @@ class AttemptLogin extends AsyncTask<String, String, String> {
      return null;
 		
 	}
+	
+	
+
+	
 	/**
   * After completing background task Dismiss the progress dialog
   * **/
@@ -187,6 +210,7 @@ class AttemptLogin extends AsyncTask<String, String, String> {
      		}
 
  		}
+
 	}
 }
 

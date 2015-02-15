@@ -27,14 +27,14 @@ public class MainActivity extends Activity {
 	private PosturePie pieChart = new PosturePie();
 	private static Context context;
 	
-//	public SharedPreferences settings;
-//	public SharedPreferences.Editor editor;
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
 	
-	TextView  dob, weight;
+	TextView  dob, weight,name,sex;
 	
 	//public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
-	private TextView user_name;
-	private TextView user_address;
+//	private TextView user_name;
+//	private TextView user_gender;
 	
 	private BroadcastReceiver broadcastRx = new BroadcastReceiver() {
 	    @Override
@@ -60,21 +60,21 @@ public class MainActivity extends Activity {
         
         
         //database related  starts here
-        user_name = (TextView)findViewById(R.id.name);
-        user_address = (TextView)findViewById(R.id.gender);
-        
-
-        
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {		    
-        	
-        	String username = extras.getString("database_user");
-		    String address = extras.getString("database_address");
-
-		    user_name.setText("Name: " + username);
-		    user_address.setText("Address: " +address);
-		}
-        
+//        user_name = (TextView)findViewById(R.id.name);
+//        user_gender = (TextView)findViewById(R.id.gender);
+//        
+//
+//        
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {		    
+//        	
+//        	String username = extras.getString("database_user");
+//		    String address = extras.getString("database_address");
+//
+//		    user_name.setText("Name: " + username);
+//		    user_gender.setText("Address: " +address);
+//		}
+//        
         
         //database related ends here
 //        
@@ -105,13 +105,13 @@ public class MainActivity extends Activity {
        // Intent intent = new Intent(MainActivity.this, bleService.class);
         //startService(intent);
         
-//        name = (TextView)findViewById(R.id.name);
-//        sex = (TextView)findViewById(R.id.gender);
+        name = (TextView)findViewById(R.id.name);
+        sex = (TextView)findViewById(R.id.gender);
         dob = (TextView)findViewById(R.id.DOB);
         weight = (TextView)findViewById(R.id.weightMain);
         
-  	  //	setUpPreferences();
-  	  //	restorePreferences();
+  	  	setUpPreferences();
+  	  	restorePreferences();
         
     }
 
@@ -209,17 +209,17 @@ public class MainActivity extends Activity {
 				layout.addView(lineView);
 	}
 //    
-//    
-//	public void setUpPreferences(){
-//    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
-//    	editor = settings.edit();
-//    }
-//	
-//	public void restorePreferences(){
-//		name.setText("NAME: " + settings.getString("name", "Mike Jones"));
-//		dob.setText("D.O.B.: " + settings.getString("DOB", "MM/DD/YYYY"));
-//		weight.setText("WEIGHT: " + settings.getString("weight", "xxx"));
-//		sex.setText("GENDER: " + settings.getString("sex", "Male"));
-//		
-//	}
+    
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    }
+	
+	public void restorePreferences(){
+		name.setText("NAME: " + settings.getString("name", "Mike"));
+		dob.setText("D.O.B.: " + settings.getString("DOB", "MM/DD/YYYY"));
+		weight.setText("WEIGHT: " + settings.getString("weight", "xxx"));
+		sex.setText("GENDER: " + settings.getString("sex", "Male"));
+		
+	}
 }

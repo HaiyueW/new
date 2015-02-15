@@ -52,7 +52,7 @@ public class EditUserSettings extends Activity {
 	    setUpPreferences();
 	    setUpSpinners();
 	    setUpButtons();
-	    restorePreferences();
+//	    restorePreferences();
 	}
 	
 	public void setUpButtons(){
@@ -144,26 +144,26 @@ public class EditUserSettings extends Activity {
     	editor = settings.edit();
     }
 	
-	public void restorePreferences(){
-		String[] name = settings.getString("name", "Mike Jones").split(" ");
-		firstName.setText(name[0]);
-		lastName.setText(name[1]);
-		
-		String[] dob = settings.getString("DOB", "1/1/2015").split("/");
-		month.setSelection(Integer.valueOf(dob[0]));
-		day.setSelection(Integer.valueOf(dob[1]));
-		year.setSelection(2015 - Integer.valueOf(dob[2]));
-		
-		if(settings.getString("sex","Male").equals("Male")){
-			sex.check(R.id.Male);
-		}
-		else{
-			sex.check(R.id.Female);
-		}
-		
-		weight.setText(settings.getString("weight", ""));
-		
-		
-	}
+//	public void restorePreferences(){
+//		String[] name = settings.getString("name", "Mike Jones").split(" ");
+//		firstName.setText(name[0]);
+//		lastName.setText(name[1]);
+//		
+//		String[] dob = settings.getString("DOB", "1/1/2015").split("/");
+//		month.setSelection(Integer.valueOf(dob[0]));
+//		day.setSelection(Integer.valueOf(dob[1]));
+//		year.setSelection(2015 - Integer.valueOf(dob[2]));
+//		
+//		if(settings.getString("sex","Male").equals("Male")){
+//			sex.check(R.id.Male);
+//		}
+//		else{
+//			sex.check(R.id.Female);
+//		}
+//		
+//		weight.setText(settings.getString("weight", ""));
+//		
+//		
+//	}
 
 }
