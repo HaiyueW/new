@@ -6,7 +6,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    
     tools:context="com.ece4600.mainapp.MainActivity" >
 
     <ImageView
@@ -17,15 +16,6 @@
         android:layout_alignParentTop="true"
         android:contentDescription="@string/photo"
         android:src="@drawable/photo" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/photo"
-        android:layout_toRightOf="@+id/photo"
-        android:text="@string/name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/age"
@@ -56,21 +46,11 @@
         android:text="@string/phone"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/login_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/phone"
-        android:layout_below="@+id/phone"
-        android:layout_marginTop="14dp"
-        android:text="@string/info"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <Button
         android:id="@+id/pedo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_info"
+        android:layout_alignLeft="@+id/address"
         android:layout_alignParentBottom="true"
         android:text="@string/pedo" />
 
@@ -99,5 +79,23 @@
         android:layout_alignBottom="@+id/heart"
         android:layout_alignRight="@+id/loca"
         android:text="@string/post" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/phone"
+        android:layout_below="@+id/phone"
+        android:text="name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/phone"
+        android:layout_below="@+id/name"
+        android:text="address:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
