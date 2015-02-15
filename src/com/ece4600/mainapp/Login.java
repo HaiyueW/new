@@ -168,11 +168,12 @@ class AttemptLogin extends AsyncTask<String, String, String> {
 
          // json success tag
          success = json.getInt(TAG_SUCCESS);
-         username_result = json.getString(TAG_USERNAME);
-         user_address = json.getString(TAG_ADDRESS);
+
          
          if (success == 1) {
-         	Log.d("Login Successful!", json.toString());
+             username_result = json.getString(TAG_USERNAME);
+             user_address = json.getString(TAG_ADDRESS);
+        	 Log.d("Login Successful!", json.toString());
          	//Intent i = new Intent(Login.this, ReadComments.class);
          	Intent i = new Intent(getApplicationContext(), MainActivity.class);
 //         	i.putExtra("database_user",username_result); // this is where the perference is sent through . need to see how perference is setup. 
@@ -184,12 +185,15 @@ class AttemptLogin extends AsyncTask<String, String, String> {
 				startActivity(i);
          	return "welcome " + json.getString(TAG_USERNAME) + " your address is :" + user_address;
          }else{
+        	
          	Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+       //  	Toast.makeText(getApplicationContext(), json.getString(TAG_MESSAGE),Toast.LENGTH_LONG).show();
          	return json.getString(TAG_MESSAGE);
          	
          }
      } catch (JSONException e) {
-         e.printStackTrace();
+         
+    	 e.printStackTrace();
      }
 
      return null;
@@ -202,11 +206,11 @@ class AttemptLogin extends AsyncTask<String, String, String> {
 	/**
   * After completing background task Dismiss the progress dialog
   * **/
- protected void onPostExecute(String file_url) {
+ protected void onPostExecute(String result) {
      // dismiss the dialog once product deleted
      pDialog.dismiss();
-     if (file_url != null){
-     	Toast.makeText(Login.this, file_url, Toast.LENGTH_LONG).show();
+     if (result != null){
+     	Toast.makeText(Login.this, result, Toast.LENGTH_LONG).show();
      		}
 
  		}
