@@ -18,6 +18,7 @@
         android:src="@drawable/photo" />
 
     <TextView
+
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,6 +27,7 @@
         android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp" />
+
 
     <TextView
         android:id="@+id/gender"
@@ -47,6 +49,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="20sp" />
 
+
     <TextView
         android:id="@+id/weightMain"
         android:layout_width="wrap_content"
@@ -61,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/photo" >
+
 
         <TableRow
             android:id="@+id/tableRow3"
@@ -82,6 +86,7 @@
             android:layout_width ="match_parent" 
             android:layout_height="wrap_content"
             >
+
 
             <LinearLayout
                 android:id="@+id/posturePie"
@@ -176,5 +181,7 @@
                 android:text="@string/heart" />
         </TableRow>
     </TableLayout>
+
+   
 
 </RelativeLayout>

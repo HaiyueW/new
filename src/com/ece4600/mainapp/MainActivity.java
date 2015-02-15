@@ -2,6 +2,7 @@ package com.ece4600.mainapp;
 
 import org.achartengine.GraphicalView;
 
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+ 
 
 public class MainActivity extends Activity {
 	public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
@@ -30,6 +31,10 @@ public class MainActivity extends Activity {
 	public SharedPreferences.Editor editor;
 	
 	TextView name, sex, dob, weight;
+	
+	//public static final String RECEIVE_JSON = "com.your.ece4600.RECEIVE_JSON";
+	private TextView user_name;
+	private TextView user_address;
 	
 	private BroadcastReceiver broadcastRx = new BroadcastReceiver() {
 	    @Override
@@ -59,10 +64,37 @@ public class MainActivity extends Activity {
 		paintGraph();
 		
 		
+
+        //database related  starts here
+        user_name = (TextView)findViewById(R.id.name);
+        user_address = (TextView)findViewById(R.id.address);
+        
+
+        
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {		    
+        	
+        	String username = extras.getString("database_user");
+		    String address = extras.getString("database_address");
+
+		    user_name.setText("Name: " + username);
+		    user_address.setText("Address: " +address);
+		}
+        
+        
+        //database related ends here
+        
+        
         setupMessageButton1();
         setupMessageButton2();
         setupMessageButton3();
         setupMessageButton4();
+        
+        //
+        
+        
+        
+        
         //Intent Login_window = new Intent(this, Login.class); // adds the log in window here
         //startActivity(Login_window);
         
