@@ -90,13 +90,13 @@ public class Posture extends Activity {
 
 		
 		//main code starts here
-		axisX1 = (TextView) findViewById(R.id.acc_x1);
+		/*axisX1 = (TextView) findViewById(R.id.acc_x1);
 		axisY1 = (TextView) findViewById(R.id.acc_y1);
 		axisZ1 = (TextView) findViewById(R.id.acc_z1);
 		
 		axisX2 = (TextView) findViewById(R.id.acc_x2);
 		axisY2 = (TextView) findViewById(R.id.acc_y2);
-		axisZ2 = (TextView) findViewById(R.id.acc_z2);
+		axisZ2 = (TextView) findViewById(R.id.acc_z2);*/
 		
 		postureText = (TextView) findViewById(R.id.postureText);
 		
@@ -278,7 +278,7 @@ public class Posture extends Activity {
 	        	
 	        	
 	        	
-	        	if (avgX1 != 0.0f){
+	        /*	if (avgX1 != 0.0f){
 	    		axisX1.setText("X: "+avgX1);
 	    		axisY1.setText("Y: "+avgY1);
 	    		axisZ1.setText("Z: "+avgZ1);
@@ -287,7 +287,7 @@ public class Posture extends Activity {
 	    		axisY2.setText("Y: "+avgY2);
 	    		axisZ2.setText("Z: "+avgZ2);
 	        	}
-	        	
+	        	*/
 	        	if (posture != null){
 	        		
 	        		if (posture.equals("STAND")){
