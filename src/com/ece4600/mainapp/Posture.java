@@ -1,7 +1,11 @@
 package com.ece4600.mainapp;
 
 
+import java.util.Calendar;
+
 import org.achartengine.GraphicalView;
+
+import com.ece4600.mainapp.Heartrate.ChartThread;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,12 +16,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +39,11 @@ import android.widget.TextView;
 
 public class Posture extends Activity {
 	
+	public SharedPreferences postureSettings;
+	public SharedPreferences.Editor editor;
+	public OnSharedPreferenceChangeListener settingsListen;
 	
-	private SharedPreferences mSharedPrefs;
+	
 	private BluetoothAdapter myBluetoothAdapter;
 
 	// main code
@@ -53,6 +64,9 @@ public class Posture extends Activity {
 	private PosturePie pieChart = new PosturePie();
 	private static Context context;
 	
+	//TODO delete this
+	Button clear;
+	private ChartThread chartThread;
 	
 	@Override
 	
@@ -65,7 +79,7 @@ public class Posture extends Activity {
 		
 		context = getBaseContext();
 		pieChart.initialize();
-		pieChart.updateData();
+		pieChart.updateData(1,1,1,1);
 		
 		paintGraph();
 		
@@ -100,6 +114,34 @@ public class Posture extends Activity {
 	
         IntentFilter intentFilter = new IntentFilter("POSTURE_EVENT");
         registerReceiver(broadcastRx, intentFilter);
+        
+        settingsListen = new OnSharedPreferenceChangeListener(){
+		      public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		    	  pieChart.updateData(postureSettings.getInt("standTime", 0),postureSettings.getInt("bendTime", 0)
+		    			  ,postureSettings.getInt("sitTime", 0),postureSettings.getInt("lieTime", 0));
+		    	  paintGraph();
+		      }
+		};
+		
+		setUpPreferences();
+		postureSettings.registerOnSharedPreferenceChangeListener(settingsListen);
+		
+		clear = (Button)findViewById(R.id.button1);
+		
+		clear.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+	    		
+	    		editor.putInt("sitTime",0);
+	    		editor.putInt("standTime",0);
+	    		editor.putInt("bendTime",0);
+	    		editor.putInt("lieTime",0);
+	    		editor.commit();
+			}
+		});	
+		
+		//Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
+		//h.postDelayed(updatePie, 1000);	
 	}
 	
 	
@@ -109,6 +151,7 @@ public class Posture extends Activity {
 	  super.onDestroy();
 	  //un-register BroadcastReceiver
 	  unregisterReceiver(broadcastRx);
+	  postureSettings.unregisterOnSharedPreferenceChangeListener(settingsListen);
 	 }
 
 	
@@ -121,12 +164,14 @@ public class Posture extends Activity {
     IntentFilter intentFilter = new IntentFilter();
     intentFilter.addAction("POSTURE_ACTION");
     registerReceiver(broadcastRx, intentFilter);
+    
+    postureSettings.registerOnSharedPreferenceChangeListener(settingsListen);
 	}
 	
 	@Override
 	protected void onPause() {
 	super.onPause();
-
+	postureSettings.unregisterOnSharedPreferenceChangeListener(settingsListen);
     LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);   
     bManager.unregisterReceiver(broadcastRx);
 	}
@@ -281,17 +326,47 @@ public class Posture extends Activity {
 	};
 	public void paintGraph(){
 		//Get Graph information:
+		
 		GraphicalView lineView = pieChart.getView(context);
 		//Get reference to layout:
 		LinearLayout layout =(LinearLayout)findViewById(R.id.pieChart);
 		//clear the previous layout:
-		//layout.removeAllViews();
+		layout.removeAllViews();
 		//add new graph:
 		if (layout != null)
 				layout.addView(lineView);
 	}
 	
 	
+
+	
+	public void setUpPreferences(){
+    	postureSettings = getSharedPreferences("posturePrefs", MODE_MULTI_PROCESS );
+    	editor = postureSettings.edit();
+    	
+    }
+	
+	private Runnable updatePie = new Runnable() {
+		   @Override
+		   public void run() {
+			  //Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
+		      //h.postDelayed(this, 1000);
+				
+		      double timeP1, timeP2, timeP3, timeP4;
+		      	timeP1 = postureSettings.getInt("standTime", 0);
+				timeP2 = postureSettings.getInt("bendTime", 0);
+				timeP3 = postureSettings.getInt("sitTime", 0);
+				timeP4 = postureSettings.getInt("lieTime", 0);
+				
+		    	  pieChart.updateData(timeP1,timeP2,timeP3,timeP4);
+		    	  
+		    	  paintGraph();
+			  
+			  
+			  
+			
+			  
+		   }};
 	
 }
 

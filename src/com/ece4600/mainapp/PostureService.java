@@ -2,16 +2,24 @@ package com.ece4600.mainapp;
 
 
 
+import java.util.Calendar;
+
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 public class PostureService extends Service{
+	public SharedPreferences postureSettings;
+	public SharedPreferences.Editor editor;
+	
+	
 	public static dataArrayFloat[] array_10_D1 = new dataArrayFloat[11];
 	public static dataArrayFloat[] array_10_D2 = new dataArrayFloat[11];
 	public static int i,counter;
@@ -30,8 +38,8 @@ public class PostureService extends Service{
 	private static double threshold_2_roll = (float)30.0;
 	private static float THRESHOLD_CONSTANT = (float) 0.85; // not used
 	private static int threshold_counterPosture = (int) 3;
-	private static int totalAvgNum1 = (int) 11; // number in average plus 1
-	private static float divideAvg = 10.0f;
+	private static int totalAvgNum1 = (int) 6; // number in average plus 1
+	private static float divideAvg = 5.0f;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -57,6 +65,8 @@ public class PostureService extends Service{
 		Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
 		h.postDelayed(resendPosture, 1000);	
 		
+		setUpPreferences();
+		
 		super.onCreate();
 	}
 
@@ -78,7 +88,7 @@ public class PostureService extends Service{
 		
 		double dummy = Math.sqrt(xValue1 * xValue1 +  yValue1 * yValue1 +  zValue1 * zValue1 );
 		
-		if ((dummy >0.75)&&(dummy < 1.25))  {
+		if ((dummy >0.5)&&(dummy < 1.60))  {
 			dataArrayFloat data = new dataArrayFloat(xValue1, yValue1, zValue1);
 			array_10_D1[i] = data;
 			dataArrayFloat data2 = new dataArrayFloat(xValue2, yValue2, zValue2);
@@ -91,8 +101,7 @@ public class PostureService extends Service{
 		if (i == totalAvgNum1) //i = 11 to get rid of null pointer exception
 		{
 			i = 0;
-			//running =true;
-			//pThread.run();
+
 			calculatePosture();
 		}
 		
@@ -136,7 +145,7 @@ public class PostureService extends Service{
 		avgZ2 = avgZ2 / divideAvg;
 		
 	
-		
+		/*
 		Handler hAvg = new Handler(Looper.getMainLooper());
 		hAvg.post(new Runnable(){
 			@Override
@@ -153,7 +162,7 @@ public class PostureService extends Service{
 				
 				sendBroadcast(i);
 			}
-		});
+		});*/
 		
 		
 		float dumAvgZ1, dumAvgY1, dumAvgZ2, dumAvgY2;
@@ -251,25 +260,26 @@ public class PostureService extends Service{
 		if (!newPosture.equals(postureState)){
 			// Where data is sent to posture class
 		
-			Log.e("PostureService", newPosture);
+			
 			postureState = newPosture;
 
 			Intent i = new Intent("POSTURE_EVENT");
 			i.putExtra("POSTURE", newPosture);
 			sendBroadcast(i);
 			
-			Handler h = new Handler(Looper.getMainLooper());
+			// Toast message to show new posture
+			/*Handler h = new Handler(Looper.getMainLooper());
 			h.post(new Runnable(){
 				@Override
 				public void run(){
-					//Log.i(DEBUG, "Connection successful, Getting Services");
+					
 					Toast.makeText( PostureService.this, postureState, Toast.LENGTH_SHORT).show();
 					
 				}
-			});
+			});*/
 		}
 		else{
-			//Log.e("PostureService", newPosture);
+		
 		}
 	}// End of calculate Posture
 	
@@ -277,14 +287,31 @@ public class PostureService extends Service{
 	private Runnable resendPosture = new Runnable() {
 		   @Override
 		   public void run() {
-			 
+			  Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
+		      h.postDelayed(this, 1000);
+				  
 			  Intent i = new Intent("POSTURE_EVENT");
 			  i.putExtra("POSTURE", newPosture);
 			  sendBroadcast(i);
 			 
+			  if (newPosture.equals("STAND")){
+				  editor.putInt("standTime", 1 + postureSettings.getInt("standTime", 0));
+				  editor.commit();
+			  }else if (newPosture.equals("SIT")){
+				  editor.putInt("sitTime", 1 + postureSettings.getInt("sitTime", 0));
+				  editor.commit();
+			  }else if(newPosture.equals("BEND")){
+				  editor.putInt("bendTime", 1 + postureSettings.getInt("bendTime", 0));
+				  editor.commit();
+			  }else{
+				  editor.putInt("lieTime", 1 + postureSettings.getInt("lieTime", 0));
+				  editor.commit();
+			  }
 			  
-			  Handler h = new Handler(Looper.getMainLooper()); //handler to delay the scan, if can't connect, then stop attempts to scan
-			  h.postDelayed(this, 1000);
+			  
+			  
+			  
+			
 			  
 		   }};
 		   
@@ -860,4 +887,24 @@ public class PostureService extends Service{
 		
 		return wScoreBEND;	
 	}//**************** end of wScoreSTAND
+	
+	
+	public void setUpPreferences(){
+    	postureSettings = getSharedPreferences("posturePrefs",MODE_MULTI_PROCESS );
+    	editor = postureSettings.edit();
+    	
+    	// Check for new day
+    	int day = Calendar.DAY_OF_MONTH;
+    	
+    	if (day != postureSettings.getInt("currentDay", 0)){
+    		editor.putInt("currentDay", day);
+    		editor.putInt("sitTime",0);
+    		editor.putInt("standTime",0);
+    		editor.putInt("bendTime",0);
+    		editor.putInt("lieTime",0);
+    		editor.commit();
+    		//TODO start new file to save
+    	}
+    }
+	
 }

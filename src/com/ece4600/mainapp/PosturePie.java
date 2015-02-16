@@ -1,6 +1,7 @@
 package com.ece4600.mainapp;
 
 import java.text.NumberFormat;
+import java.util.Calendar;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -9,6 +10,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 
 public class PosturePie {
@@ -37,6 +39,9 @@ public class PosturePie {
 	private DefaultRenderer mRenderer = new DefaultRenderer();
 	private GraphicalView mChartView;
 	
+	public SharedPreferences postureSettings;
+	public SharedPreferences.Editor editor;
+	
 	public void initialize(){
 		timeP1= 25;
 		timeP2= 25;
@@ -59,10 +64,17 @@ public class PosturePie {
 		mRenderer.setZoomButtonsVisible(false); 
 	}
 
-	public void updateData(){
+	public void updateData(double time1, double time2,  double time3, double time4){
 		mSeries.clear();
+		mRenderer.removeAllRenderers();
 		
 		
+		timeP1 = time1;
+		timeP2 = time2;
+		timeP3 = time3;
+		timeP4 = time4;
+		
+		totalTime = timeP1 + timeP2 + timeP3 + timeP4;
 		
 		mSeries.add(strP1, timeP1/totalTime);
 		SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
@@ -100,4 +112,6 @@ public class PosturePie {
 	public void rePaint(){
 		mChartView.repaint();
 	}
+	
+
 }

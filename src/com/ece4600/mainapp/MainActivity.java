@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
 //        
     	context = getBaseContext();
 		pieChart.initialize();
-		pieChart.updateData();
+		pieChart.updateData(1,1,1,1);
 		paintGraph();
 
         setupMessageButton1();
@@ -186,6 +186,11 @@ public class MainActivity extends Activity {
     	case R.id.editProfile:
     		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().clear().commit();
     		startActivity(new Intent(this, EditUserSettings.class));
+    		finish();
+    		break;
+    	case R.id.action_settings:
+    		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().clear().commit();
+    		startActivity(new Intent(this, Bluetooth.class));
     		finish();
     		break;
     		

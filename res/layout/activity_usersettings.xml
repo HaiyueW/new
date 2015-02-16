@@ -23,7 +23,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/pastPosture4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="First name:"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/pastPosture1"
             android:layout_width="0dp"
             android:layout_weight="0.15"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/pastPosture2"
             android:layout_width="0dp"
             android:layout_weight="0.25"
             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/pastPosture3"
             android:layout_width="0dp"
             android:layout_weight="0.30"
             android:layout_height="wrap_content"
