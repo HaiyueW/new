@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.text.format.Time;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.Toast;
@@ -18,7 +19,9 @@ import android.widget.Toast;
 public class PostureService extends Service{
 	public SharedPreferences postureSettings;
 	public SharedPreferences.Editor editor;
-	
+	private Time now = new Time();
+	private PostureFileOperations fileOps = new PostureFileOperations();
+	private String fileName;
 	
 	public static dataArrayFloat[] array_10_D1 = new dataArrayFloat[11];
 	public static dataArrayFloat[] array_10_D2 = new dataArrayFloat[11];
@@ -32,6 +35,9 @@ public class PostureService extends Service{
 	private double wScoreLBS, wScoreLFS, wScoreLLS, wScoreLRS;
 	private double wScoreSIT, wScoreBEND, wScoreSTAND;
 	
+	
+	public long pastMsTime, nowMsTime, duration;
+	public Boolean firstTime;
 	
 	//CONSTANTS
 	private static double threshold_1_roll = (float)30.0;
@@ -66,6 +72,9 @@ public class PostureService extends Service{
 		h.postDelayed(resendPosture, 1000);	
 		
 		setUpPreferences();
+		
+		firstTime = true;
+		pastMsTime = System.currentTimeMillis();
 		
 		super.onCreate();
 	}
@@ -259,13 +268,56 @@ public class PostureService extends Service{
 		
 		if (!newPosture.equals(postureState)){
 			// Where data is sent to posture class
-		
+			nowMsTime = System.currentTimeMillis();
+			duration = nowMsTime - pastMsTime;
 			
+			String postureStr, temp;
+			short postureNum =0;
+			postureStr = "";
+			
+			//TODO organize this
+			if (postureState.equals("STAND")){
+				postureStr ="Standing";
+				postureNum = 3;
+			}else if (postureState.equals("SIT")){
+				postureStr ="Sitting";
+				postureNum = 1;
+			}
+			else if (postureState.equals("BEND")){
+				postureStr ="Bending";
+				postureNum = 2;
+			}else if (postureState.equals("LIEBACK")){
+				postureStr ="Laying down (back side)";
+				postureNum = 4;
+			}else if (postureState.equals("LIEFRONT")){
+				postureStr ="Laying down (front side)";
+				postureNum = 5;
+			}else if (postureState.equals("LIELEFT")){
+				postureStr ="Laying down (left side)";
+				postureNum = 7;
+			}else if (postureState.equals("LIERIGHT")){
+				postureStr ="Laying down (right side)";
+				postureNum = 6;
+			}
+
+			
+			temp = convertTimeStr(duration) + " - " + postureStr;
+			
+			fileOps.write(fileName, duration, postureStr, postureNum);
+			
+			editor.putString("passPosture5", postureSettings.getString("passPosture4", ""));
+			editor.putString("passPosture4", postureSettings.getString("passPosture3", ""));
+			editor.putString("passPosture3",postureSettings.getString("passPosture2", ""));
+			editor.putString("passPosture2", postureSettings.getString("passPosture1", ""));
+			editor.putString("passPosture1", temp);
 			postureState = newPosture;
 
 			Intent i = new Intent("POSTURE_EVENT");
 			i.putExtra("POSTURE", newPosture);
 			sendBroadcast(i);
+			
+			
+			
 			
 			// Toast message to show new posture
 			/*Handler h = new Handler(Looper.getMainLooper());
@@ -890,11 +942,20 @@ public class PostureService extends Service{
 	
 	
 	public void setUpPreferences(){
-    	postureSettings = getSharedPreferences("posturePrefs",MODE_MULTI_PROCESS );
+		String userName, fName, date;
+		postureSettings = getSharedPreferences("userPrefs", MODE_PRIVATE);
     	editor = postureSettings.edit();
+  
+    	userName = postureSettings.getString("name", "Mike");
     	
     	// Check for new day
     	int day = Calendar.DAY_OF_MONTH;
+
+    	
+      	postureSettings = getSharedPreferences("posturePrefs",MODE_MULTI_PROCESS );
+    	editor = postureSettings.edit();	  
+    	fileName = postureSettings.getString("fileName", "");
+    	//TODO put into if statement
     	
     	if (day != postureSettings.getInt("currentDay", 0)){
     		editor.putInt("currentDay", day);
@@ -903,8 +964,53 @@ public class PostureService extends Service{
     		editor.putInt("bendTime",0);
     		editor.putInt("lieTime",0);
     		editor.commit();
+    		
+         	now.setToNow();
+         	date = now.month + "-" + String.valueOf(now.monthDay) + "-" + now.year;
+        	fName = userName+ " Posture " + date + ".csv";
+        	fileName = fName;
+        	fileOps.writeHeader(fName,userName, date);
+        	
+        	editor.putString("fileName", fileName);
+        	editor.commit();
     		//TODO start new file to save
     	}
     }
+	
+	public String convertTimeStr(long timeMs){
+		   long hour, min, sec;
+		   String hourString, minString, secString, totalTime;
+		    hour = timeMs / 3600000;
+			min = (timeMs - hour * 3600000)/60000;
+			sec = (timeMs - hour * 3600000 - min * 60000)/1000;
+			
+			//FORMAT HOUR
+			if( (hour>=0) && (hour<10)){
+				hourString = '0' + String.valueOf(hour);
+			}
+			else{
+				hourString = String.valueOf(hour);
+			}
+			//FORMAT MINUTE
+			if( (min>=0) && (min<10)){
+				minString = '0' + String.valueOf(min);
+			}
+			else{
+				minString = String.valueOf(min);
+			}
+			
+			//FORMAT SECOND
+			if( (sec>=0) && (sec<10)){
+				secString = '0' + String.valueOf(sec);
+			}
+			else{
+				secString = String.valueOf(sec);
+			}
+			
+			totalTime = hourString + 'h' + minString + 'm' + secString + 's';
+			return totalTime;
+	}
+	
+	
 	
 }

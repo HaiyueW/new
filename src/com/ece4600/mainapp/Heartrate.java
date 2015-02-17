@@ -118,8 +118,8 @@ private  Chronometer timer;
 	 // unregisterReceiver(broadcastRx);
 	  
 	  Intent i = new Intent("BTMATE_EVENT");
-		i.putExtra("command", 'p');
-		sendBroadcast(i);
+	  i.putExtra("command", 'p');
+	  sendBroadcast(i);
 		
 	  
 	  Intent intent2 = new Intent(Heartrate.this, btMateService.class);

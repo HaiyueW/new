@@ -168,7 +168,8 @@ public class bleService extends Service{
 	}
 	@Override
 	public void onDestroy(){ // disconnects the sensortag connection after quitting service
-		
+		Intent i = new Intent(bleService.this, PostureService.class);
+		stopService(i);
 	if (mConnectedGatt1 != null)	
 		mConnectedGatt1.disconnect();
 	if (mConnectedGatt2 != null)	
@@ -341,6 +342,8 @@ private BluetoothGattCallback mGattCallback1 = new BluetoothGattCallback() {
         } else if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_DISCONNECTED) {
          
         	mSensor1 = mSensorState.DISCONNECTED;
+        	mSensor2 = mSensorState.DISCONNECTED;
+        	turnOffSelf();
             
         } else if (status != BluetoothGatt.GATT_SUCCESS) {
             /*
@@ -460,7 +463,8 @@ private BluetoothGattCallback mGattCallback2 = new BluetoothGattCallback() {
         
      } else if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_DISCONNECTED) {
     	 mSensor2 = mSensorState.DISCONNECTED;
-         
+    	 mSensor1 = mSensorState.DISCONNECTED;
+     	 turnOffSelf();
      } else if (status != BluetoothGatt.GATT_SUCCESS) {
          /*
           * If there is a failure at any stage, simply disconnect
@@ -566,8 +570,8 @@ private Runnable runnable1 = new Runnable() {
 		  
 		  handler.postDelayed(this, 100);
 		  if (mSensor1 == mSensorState.CONNECTED){
-			  String data1 = "D1," + array_2d[0].xaxis +  "," + array_2d[0].yaxis +  "," + array_2d[0].zaxis;
-			  Log.i(DEBUG, data1);
+			  //String data1 = "D1," + array_2d[0].xaxis +  "," + array_2d[0].yaxis +  "," + array_2d[0].zaxis;
+			  //Log.i(DEBUG, data1);
        
 			  Intent i = new Intent(bleService.this, PostureService.class);
 			  i.putExtra("XVal1", (float) array_2d[0].xaxis);
@@ -604,7 +608,7 @@ private Runnable runnable = new Runnable() {
           String data1 = "D1," + array_2d[0].xaxis +  "," + array_2d[0].yaxis +  "," + array_2d[0].zaxis;
           String data2 = ",D2," + array_2d[1].xaxis +  "," + array_2d[1].yaxis +  "," + array_2d[1].zaxis;
           String data = data1 + data2;
-          Log.i(DEBUG, data);
+         // Log.i(DEBUG, data);
           
           Intent i = new Intent(bleService.this, PostureService.class);
 		  i.putExtra("XVal1", (float) array_2d[0].xaxis);

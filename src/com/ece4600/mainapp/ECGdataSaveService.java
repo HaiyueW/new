@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.IBinder;
 import android.text.format.Time;
@@ -13,11 +14,15 @@ import android.util.Log;
 
 public class ECGdataSaveService extends Service {
 
+	public SharedPreferences settings;
+	public SharedPreferences.Editor editor;
+	 
+	 
 	private final static String TAG = "DataSave";
 	private final String PATH = Environment.getExternalStorageDirectory() + "/wellNode/ECG Recordings";
-	// TODO: Variable userName
 	
-	private final String userName = "Jane Doe";
+	
+	private String userName = "Jane Doe";
 	private final static short maxSampleSize = 18000; // 300 Hz * 60 seconds
 	
 	
@@ -42,6 +47,8 @@ public class ECGdataSaveService extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
+		setUpPreferences();
+		
 		writeThread = new writeDataThread();
 		writeThread.start();
 		
@@ -102,5 +109,14 @@ public class ECGdataSaveService extends Service {
 		
 		
 	}
+
+	
+	public void setUpPreferences(){
+    	settings = getSharedPreferences("userPrefs", MODE_PRIVATE);
+    	editor = settings.edit();
+    	
+    	userName = settings.getString("name", "Mike");
+    }
+	
 
 }

@@ -49,13 +49,13 @@
     <string name="map">Map</string>
     <string name="reset">Reset</string>
     <string name="title_activity_display_wifi">DisplayWifi</string>
-    <string name="title_activity_bluetooth">Bluetooth</string>
+    <string name="title_activity_bluetooth">Bluetooth Settings</string>
     <string name="blueon">Turn On</string>
     <string name="bluevisible">Get Visible</string>
     <string name="blueposture">Posture</string>
     <string name="bluepair">Paired Devices</string>
     <string name="blueoff">Turn Off</string>
-    <string name="bluetooth">Bluetooth Setting</string>
+    <string name="bluetooth">Bluetooth Settings</string>
     <string name="bluecancel">Cancel</string>
     <string name="pedo_currentacc">Current Acceleration</string>
     <string name="pedo_xaxis">X-Axis</string>
@@ -84,5 +84,5 @@
     <string name="editProfile">Edit profile</string>
     <string name="logOutString">Log out</string>
     <string name="DOB">D.O.B.: MM/DD/YYYY</string>
-
+    <string name="title_activity_editProfile">Edit Profile</string>
 </resources>

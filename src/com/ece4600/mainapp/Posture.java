@@ -50,7 +50,7 @@ public class Posture extends Activity {
 	
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
-	private TextView axisX1, axisY1, axisZ1,axisX2, axisY2, axisZ2, postureText;
+	private TextView posture1,posture2,posture3, posture4,posture5, postureText;
 	public TextView timenano,x_avg,threshold;
 	public dataSample[] array_10 = new dataSample[10];
 	int i = 0;
@@ -89,6 +89,12 @@ public class Posture extends Activity {
 		//bluetooth stuff ends here;
 
 		
+		posture1 = (TextView) findViewById(R.id.posture1);
+		posture2 = (TextView) findViewById(R.id.posture2);
+		posture3 = (TextView) findViewById(R.id.posture3);
+		posture4 = (TextView) findViewById(R.id.posture4);
+		posture5 = (TextView) findViewById(R.id.posture5);
+		
 		//main code starts here
 		/*axisX1 = (TextView) findViewById(R.id.acc_x1);
 		axisY1 = (TextView) findViewById(R.id.acc_y1);
@@ -120,11 +126,19 @@ public class Posture extends Activity {
 		    	  pieChart.updateData(postureSettings.getInt("standTime", 0),postureSettings.getInt("bendTime", 0)
 		    			  ,postureSettings.getInt("sitTime", 0),postureSettings.getInt("lieTime", 0));
 		    	  paintGraph();
+		    	  
+		    	  // New posture
+			       posture1.setText("1. " + postureSettings.getString("passPosture1", "1."));
+			       posture2.setText("2. " + postureSettings.getString("passPosture2", "2."));
+			       posture3.setText("3. " + postureSettings.getString("passPosture3", "3."));
+			       posture4.setText("4. " + postureSettings.getString("passPosture4", "4."));
+			       posture5.setText("5. " + postureSettings.getString("passPosture5", "5."));
 		      }
 		};
 		
 		setUpPreferences();
 		postureSettings.registerOnSharedPreferenceChangeListener(settingsListen);
+		restorePreferences();
 		
 		clear = (Button)findViewById(R.id.button1);
 		
@@ -367,6 +381,20 @@ public class Posture extends Activity {
 			
 			  
 		   }};
+		   
+		   public void restorePreferences(){
+			   pieChart.updateData(postureSettings.getInt("standTime", 0),postureSettings.getInt("bendTime", 0)
+		    			  ,postureSettings.getInt("sitTime", 0),postureSettings.getInt("lieTime", 0));
+		       paintGraph();
+		       
+		       
+		       posture1.setText(postureSettings.getString("passPosture1", "1."));
+		       posture2.setText(postureSettings.getString("passPosture2", "2."));
+		       posture3.setText(postureSettings.getString("passPosture3", "3."));
+		       posture4.setText(postureSettings.getString("passPosture4", "4."));
+		       posture5.setText(postureSettings.getString("passPosture5", "5."));
+		       
+		   }
 	
 }
 
