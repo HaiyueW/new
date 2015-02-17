@@ -79,6 +79,7 @@
             android:screenOrientation="portrait"
             >
         </activity>
+         <activity android:name="Location_map" android:screenOrientation="portrait"></activity>
         <activity android:name=".EditUserSettings"></activity>
     </application>
 

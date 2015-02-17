@@ -19,6 +19,7 @@ import org.kymjs.aframe.database.KJDB;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -35,24 +36,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Location extends Activity implements OnClickListener,
-		SensorEventListener {
-	private WifiAdmin mWifiAdmin;
+public class Location extends Activity implements OnClickListener,SensorEventListener {
 	
+	private double zx = 0;
+	private double zy = 0;
+	
+	private WifiAdmin mWifiAdmin;
+	private Button btn_map;
 	private List<ScanResult> list;
 	private ScanResult mScanResult;
 	private StringBuffer sb = new StringBuffer();
-
-
 	private Map<String, String> scanMap = new HashMap<String, String>();
-
 	private List<RecordInfo> xmlList = null;
-
 	private TextView tvXMLResult;
 	private TextView tvNowWifi;
 	private TextView tvJSResult;
-
 	private boolean ispuase = true;
+
 
 	Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -189,7 +189,18 @@ public class Location extends Activity implements OnClickListener,
 		tvNowWifi = (TextView) findViewById(R.id.tv_now_wifi);
 		tvJSResult = (TextView) findViewById(R.id.tv_jisuan_result);
 		btPause = (Button) findViewById(R.id.pause);
-
+		btn_map = (Button) findViewById(R.id.btn_map);
+		btn_map.setOnClickListener(this);
+		btReturn=(Button) findViewById(R.id.button1);
+		
+		btReturn.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v) {
+				startActivity(new Intent(Location.this, MainActivity.class));
+				finish();
+				
+			}
+		});
+		
 		btPause.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -233,7 +244,8 @@ public class Location extends Activity implements OnClickListener,
 		mHandler.removeMessages(2);
 		mHandler.removeMessages(3);
 	}
-
+	
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -246,6 +258,7 @@ public class Location extends Activity implements OnClickListener,
 			
 			saveXML();
 			break;
+       
 		case R.id.check_data:
 			if (ispuase) {
 				ispuase = false;
@@ -257,11 +270,22 @@ public class Location extends Activity implements OnClickListener,
 						.show();
 			}
 			break;
+		case R.id.btn_map:
+			Bundle bundle = new Bundle();
+			Intent intent = new Intent();
+			bundle.putDouble("zx", zx);
+			bundle.putDouble("zy", zy);
+			intent.setClass(Location.this, Location_map.class);
+			intent.putExtras(bundle);
+			startActivity(intent);
+			Toast.makeText(this, "zx="+zx+"zy="+zy,Toast.LENGTH_LONG).show();
+		break;
 
 		default:
 			break;
 		}
 	}
+	
 
 	private void doJisuan() {
 		new Thread(new Runnable() {
@@ -386,6 +410,7 @@ public class Location extends Activity implements OnClickListener,
 	private Map<Double, RecordInfo> resultMap = new HashMap<Double, RecordInfo>();
 	private Button btPause;
 	private Button btCheck;
+	private Button btReturn;
 
 	double nowDistance = 0;
 
