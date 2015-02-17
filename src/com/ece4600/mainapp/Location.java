@@ -1,278 +1,622 @@
 package com.ece4600.mainapp;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.xmlpull.v1.XmlSerializer;
+import org.kymjs.aframe.database.KJDB;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
-import android.util.Xml;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.qozix.tileview.TileView;
-import com.qozix.tileview.markers.MarkerEventListener;
+public class Location extends Activity implements OnClickListener,SensorEventListener {
+	
+	private double zx = 0;
+	private double zy = 0;
+	
+	private WifiAdmin mWifiAdmin;
+	private Button btn_map;
+	private List<ScanResult> list;
+	private ScanResult mScanResult;
+	private StringBuffer sb = new StringBuffer();
+	private Map<String, String> scanMap = new HashMap<String, String>();
+	private List<RecordInfo> xmlList = null;
+	private TextView tvXMLResult;
+	private TextView tvNowWifi;
+	private TextView tvJSResult;
+	private boolean ispuase = true;
 
-import android.widget.ImageView;
 
-public class Location extends Activity {
+	Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 1:
+			
+				doJisuan();
 
-    TileView tileView;
-    MyTask objMyTask;
-    double x_pos = 0.1 , y_pos =0.16;
-    private static final int SLEEP_TIME=((60*1000)/1000);
+				this.sendEmptyMessageDelayed(1, 500);
+				break;
 
-    
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+			case 2:
+				if (scanMap != null) {
+					tvNowWifi.setText("Current wifi information" + scanMap.toString());
+				}
+				break;
+			case 3:
 
-        // Create our TileView
-        tileView = new TileView(this);
+				StringBuffer buffer = new StringBuffer();
+				String string2 = "total calculated " + count + " times**********Each distance is"
+						+ lists.toString();
+				buffer.append(string2);
+				if (resultList.size() > 0) {
+					// find minimum
+					// Double maxCount = Collections.max(resultList);
+					// Double mixCount = Collections.min(resultList);
+					// RecordInfo recordInfo2 = resultMap.get(mixCount);
+					// TODO find minimum five
 
-        // Set the minimum parameters
-        tileView.setSize(9362,6623);
-        tileView.addDetailLevel(1f, "tiles/1000_%col%_%row%.png", "downsamples/map.png");
-        tileView.addDetailLevel(0.5f, "tiles/500_%col%_%row%.png", "downsamples/map.png");
-        tileView.addDetailLevel(0.25f, "tiles/250_%col%_%row%.png", "downsamples/map.png");
-        tileView.addDetailLevel(0.125f, "tiles/125_%col%_%row%.png", "downsamples/map.png");
-        // Add the view to display it
-        setContentView(tileView);
-        // use pixel coordinates to roughly center it
-        // they are calculated against the "full" size of the mapView 
-        // i.e., the largest zoom level as it would be rendered at a scale of 1.0f
-//        tileView.moveToAndCenter( 9362,6623 );
-//        tileView.slideToAndCenter( 9362,6623 );
+					if (isRoom) {
+					
+						Double mixCount = Collections.min(resultList);
 
-        tileView.defineRelativeBounds( 0, 0, 1, 1 );
-        tileView.moveToAndCenter( 0.5, 0.5);
-//        frameTo( 0.5, 0.5 );
-        
-        // Set the default zoom (zoom out by 4 => 1/4 = 0.25)
-        tileView.setScale( 0.125 );
-  //      tileView.addMarkerEventListener(Calculate_EventListener);
-        
-        ImageView markerA = new ImageView(this);
-        markerA.setImageResource(R.drawable.calculator_small); // can use another image for calculate
-        markerA.setTag("Calculate");
+						buffer.append("**********" + mixCount);
+						RecordInfo recordInfo2 = resultMap.get(mixCount);
 
-        ImageView markerB = new ImageView(this);
-        markerB.setImageResource(R.drawable.maps_marker_blue_small);
-        markerB.setTag("Paris");
-        markerB.setOnClickListener( markerClickListener );
-        
-        tileView.addMarker(markerA, 0.1, 0.16, -0.5f, -1.0f); // horizontal, vertical 
-        tileView.addMarker(markerB, 0.1, 0.16, -0.5f, -1.0f);
-        //        tileView.removeMarker(markerA);
+						buffer.append("**********************current location "
+								+ recordInfo2.getRoomName());
+						
+						tvJSResult.setText(buffer.toString());
+					} else {
+						
+						Collections.sort(resultList);
+						
+						double zx = 0;
+						double zy = 0;
+						
+						for (int i = 0; i < 5; i++) {
+							zx = zx
+									+ Double.valueOf(resultMap.get(
+											resultList.get(i)).getRoomName());
+							zy = zy
+									+ Double.valueOf(resultMap.get(
+											resultList.get(i)).getSpotName());
+							buffer.append(
+									"  "
+											+ i
+											+ "     :"
+											+ resultList.get(i)
+											+ "***x:"
+											+ resultMap.get(resultList.get(i))
+													.getRoomName())
+									.append("***y:"
+											+ resultMap.get(resultList.get(i))
+													.getSpotName())
+									.append("***");
+						}
 
-    }
-    
-//    public MarkerEventListener Calculate_EventListener = new MarkerEventListener() {
-//    	@Override
-//    	public void onMarkerTap( View markerB, int x, int y ) {
-//    	Toast.makeText( getApplicationContext(), "Calculating", Toast.LENGTH_SHORT).show();
-//		objMyTask = new MyTask();
-//		objMyTask.execute();
-//		tileView.moveMarker(markerB, x_pos, y_pos,-0.5f, -1.0f);
-//	//	tileView.addMarker(markerA, 0.3, 0.4);
-//    	}
-//    };
-//    
-    
-    class MyTask extends AsyncTask<Void, Integer, Void> {
+						zx = zx / 5;
+						zy = zy / 5;
 
-		Dialog dialog;
-		ProgressBar progressBar;
-		TextView tvLoading,tvPer;
-		Button btnCancel;
+						buffer.append("***********current location determined:x is" + zx
+								+ "******y is" + zy);
+					
+						tvJSResult.setText(buffer.toString());
+					}
+
+				} else {
+					tvJSResult.setText(string2 + "**********not found");
+
+				}
+
+				Log.e("xmlList.size()", "xmlList.size()=" + xmlList.size());
+				Log.e("count", "count=" + count);
+				break;
+
+			default:
+				break;
+			}
+		}
+
+	};
+
+	private KJDB kjdb;
+	SensorManager manager;
+	float currentDegree = 120f + 0f;
+
+	private boolean isDegree = true;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_second);
+		mWifiAdmin = new WifiAdmin(this);
+		manager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+		isRoom = getIntent().getBooleanExtra("isRoom", false);
+		if (isRoom) {
+			isDegree = false;
+		}
+		
+		btRoom = (Button) findViewById(R.id.but_isroom);
+		btRoom.setText("In Room "+isRoom);
+		btRoom.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (isRoom) {
+					isRoom = false;
+					isDegree = true;
+				}else{
+					isRoom = true;
+					isDegree = false;
+				}
+				btRoom.setText("Room "+isRoom);
+			}
+		});
+		findViewById(R.id.read_xml).setOnClickListener(this);
+		btCheck = (Button) findViewById(R.id.check_data);
+		btCheck.setOnClickListener(this);
+
+		findViewById(R.id.save_data).setOnClickListener(this);
+		tvXMLResult = (TextView) findViewById(R.id.tv_read_result);
+		tvNowWifi = (TextView) findViewById(R.id.tv_now_wifi);
+		tvJSResult = (TextView) findViewById(R.id.tv_jisuan_result);
+		btPause = (Button) findViewById(R.id.pause);
+		btn_map = (Button) findViewById(R.id.btn_map);
+		btn_map.setOnClickListener(this);
+		btReturn=(Button) findViewById(R.id.button1);
+		
+		btReturn.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v) {
+				startActivity(new Intent(Location.this, MainActivity.class));
+				finish();
+				
+			}
+		});
+		
+		btPause.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (ispuase == false) {
+					ispuase = true;
+					btPause.setText("Pause");
+					btCheck.setText("Start");
+					mHandler.removeMessages(1);
+					mHandler.removeMessages(2);
+					mHandler.removeMessages(3);
+				} else {
+					Toast.makeText(Location.this, "Not Started", Toast.LENGTH_SHORT)
+							.show();
+				}
+
+			}
+		});
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		manager.registerListener(this,
+				manager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+				SensorManager.SENSOR_DELAY_GAME);
+	}
+
+	@Override
+	protected void onPause() {
+		manager.unregisterListener(this);
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		ispuase = true;
+		mHandler.removeMessages(1);
+		mHandler.removeMessages(2);
+		mHandler.removeMessages(3);
+	}
+	
+	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.read_xml:
+			Toast.makeText(this, "current Degree" + currentDegree,
+					Toast.LENGTH_SHORT).show();
+			new ImportDatabaseTask().execute();
+			break;
+		case R.id.save_data:
+			
+			saveXML();
+			break;
+       
+		case R.id.check_data:
+			if (ispuase) {
+				ispuase = false;
+				btPause.setText("Pause");
+				btCheck.setText("Calculating");
+				mHandler.sendEmptyMessage(1);
+			} else {
+				Toast.makeText(Location.this, "Already Started", Toast.LENGTH_SHORT)
+						.show();
+			}
+			break;
+		case R.id.btn_map:
+			Bundle bundle = new Bundle();
+			Intent intent = new Intent();
+			bundle.putDouble("zx", zx);
+			bundle.putDouble("zy", zy);
+			intent.setClass(Location.this, Location_map.class);
+			intent.putExtras(bundle);
+			startActivity(intent);
+			Toast.makeText(this, "zx="+zx+"zy="+zy,Toast.LENGTH_LONG).show();
+		break;
+
+		default:
+			break;
+		}
+	}
+	
+
+	private void doJisuan() {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				scanWifi();
+			}
+		}).start();
+
+	};
+
+	private void scanWifi() {
+		
+		if (sb != null) {
+			sb = new StringBuffer();
+		}
+	
+		mWifiAdmin.startScan();
+		list = mWifiAdmin.getWifiList();
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				
+				mScanResult = list.get(i);
+				String mac = mScanResult.BSSID;
+				String level = "" + mScanResult.level;
+
+				scanMap.put(mac, level);
+			}
+
+			mHandler.sendEmptyMessage(2);
+
+			
+			checkData();
+		}
+	}
+
+	
+	private void readData() {
+		Log.e("sss", "readData");
+		datalist = kjdb.findAll(User.class);
+
+		if (datalist != null) {
+			tvXMLResult.setText("database result" + datalist.toString());
+		}
+
+		xmlList = new ArrayList<RecordInfo>();
+
+		for (int i = 0; i < datalist.size(); i++) {
+			User user = datalist.get(i);
+			RecordInfo recordInfo2 = new RecordInfo();
+			if (isRoom) {
+				recordInfo2.setRoomName(user.getRoom());
+				recordInfo2.setSpotName("");
+			} else {
+				recordInfo2.setRoomName(user.getX());
+				recordInfo2.setSpotName(user.getY());
+			}
+
+			List<WifiInfo> wifiList = new ArrayList<WifiInfo>();
+			wifiList.add(new WifiInfo(Constans.ROUTER1, user.getRouter1()));
+			wifiList.add(new WifiInfo(Constans.ROUTER2, user.getRouter2()));
+			wifiList.add(new WifiInfo(Constans.ROUTER3, user.getRouter3()));
+			wifiList.add(new WifiInfo(Constans.ROUTER4, user.getRouter4()));
+			wifiList.add(new WifiInfo(Constans.ROUTER5, user.getRouter5()));
+			wifiList.add(new WifiInfo(Constans.ROUTER6, user.getRouter6()));
+			recordInfo2.setWifiInfos(wifiList);
+			xmlList.add(recordInfo2);
+		}
+
+	}
+
+	/**
+	 * 
+	 * 
+	 * AP1: e8:de:27:7b:97:1c AP2: e8:de:27:36:52:ee AP3: e8:de:27:7b:97:42 AP4:
+	 * e8:de:27:36:54:2e AP5: e8:de:27:7b:97:52 AP6: e8:de:27:36:54:40
+	 */
+	private void checkData() {
+
+		
+		if (lists.size() > 0) {
+			lists.clear();
+		}
+	
+		if (resultList.size() > 0) {
+			resultList.clear();
+		}
+		
+		if (resultMap.size() > 0) {
+			resultMap.clear();
+		}
+
+		count = 0;
+		if (xmlList != null && xmlList.size() > 0) {
+			for (int i = 0; i < xmlList.size(); i++) {
+		
+				RecordInfo recordInfo = xmlList.get(i);
+				
+				List<WifiInfo> wifiInfos = recordInfo.getWifiInfos();
+				
+				double doDistance = doDistance(wifiInfos);
+
+				if (doDistance != 0.0) {
+					count++;
+					lists.add(doDistance);
+
+					resultList.add(doDistance);
+			
+					resultMap.put(doDistance, recordInfo);
+				}
+			}
+			mHandler.sendEmptyMessage(3);
+		}
+	}
+
+	private int count = 0;
+
+	private List<Double> lists = new ArrayList<Double>();
+	private List<Double> resultList = new ArrayList<Double>();
+	private Map<Double, RecordInfo> resultMap = new HashMap<Double, RecordInfo>();
+	private Button btPause;
+	private Button btCheck;
+	private Button btReturn;
+
+	double nowDistance = 0;
+
+	
+	private double doDistance(List<WifiInfo> wifiInfos) {
+
+		nowDistance = 0;
+
+		if (scanMap != null) {
+			for (int i = 0; i < wifiInfos.size(); i++) {
+				WifiInfo wifiInfo = wifiInfos.get(i);
+				if (scanMap.containsKey(wifiInfo.getBssid())) {
+					
+					int xmlLevel = Integer.valueOf(scanMap.get(wifiInfo
+							.getBssid()));
+				
+					int nowLevel = wifiInfo.getLevel();
+			
+					int newLevel = Math.abs(xmlLevel - nowLevel);
+				
+					nowDistance += Math.pow(newLevel, 2);
+
+				}
+			}
+
+		}
+
+		Log.e("Math.sqrt(nowDistance)", "" + Math.sqrt(nowDistance));
+		return Math.sqrt(nowDistance);
+	}
+
+	
+	private void saveXML() {
+		stringBuffer.append("result:").append(tvXMLResult.getText().toString())
+				.append("***nowWifi:").append(tvNowWifi.getText().toString())
+				.append("***JSResult:").append(tvJSResult.getText().toString());
+		pATH = Environment.getExternalStorageDirectory() + "/MyData/";
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			File f = new File(pATH);
+			if (!f.exists()) {
+				f.mkdir();
+			}
+			setDatasToSD();
+		} else {
+			Toast.makeText(getApplicationContext(), "SD can't work",
+					Toast.LENGTH_LONG).show();
+		}
+	}
+
+	StringBuffer stringBuffer = new StringBuffer();
+	private String pATH;
+	private List<User> datalist;
+	private boolean isRoom;
+	private Button btRoom;
+
+	private void setDatasToSD() {
+		if (stringBuffer.toString() != null && stringBuffer.toString() != "") {
+
+			ObjectOutputStream oos = null;
+			try {
+				Person person = new Person(stringBuffer.toString());
+				stringBuffer = new StringBuffer();
+				FileOutputStream fos = new FileOutputStream(pATH + ""
+						+ saveNowTime() + "record" + ".txt");
+				oos = new ObjectOutputStream(fos);
+				oos.writeObject(person);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (oos != null) {
+					try {
+						oos.close();
+						Toast.makeText(getApplicationContext(),
+								"save success!", Toast.LENGTH_SHORT).show();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	private String saveNowTime() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date curDate = new Date(System.currentTimeMillis());
+		String str = formatter.format(curDate);
+		return str;
+	}
+
+	private class ImportDatabaseTask extends AsyncTask<Void, Void, String> {
+
+		private final ProgressDialog dialog = new ProgressDialog(Location.this);
 
 		@Override
 		protected void onPreExecute() {
-			super.onPreExecute();
-			dialog = new Dialog(Location.this);
-			dialog.setCancelable(false);
-			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-			dialog.setContentView(R.layout.progressdialog);
 
-			progressBar = (ProgressBar) dialog.findViewById(R.id.progressBar1);
-			tvLoading = (TextView) dialog.findViewById(R.id.tv1);
-			tvPer = (TextView) dialog.findViewById(R.id.tvper);
-			btnCancel = (Button) dialog.findViewById(R.id.btncancel);
+			this.dialog.setMessage("Getting database...");
 
-			btnCancel.setOnClickListener(new OnClickListener() {
+			this.dialog.show();
 
-				@Override
-				public void onClick(View v) {
-					objMyTask.cancel(true);
-					dialog.dismiss();
-				}
-			});
-
-			dialog.show();
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected String doInBackground(final Void... args) {
 
-			 
-/// put algorithm here -------------> result should be output into x_pos and y_pos 
-// x_pos and y_pos are all normalized to 1. // might need conversion to get the right values
-			
-					
-				{x_pos = x_pos +0.1;
-				y_pos = y_pos +0.1;
-				if (x_pos > 1){
-					x_pos = 0.3;
-				}
-				if (y_pos > 1){
-					y_pos =0.1;
-				}
-				}
+			if (!Environment.MEDIA_MOUNTED.equals(Environment
+					.getExternalStorageState())) {
 
-				
-				
-				
-/// <------------------------------------
-//				{
-//					System.out.println(i);
-//					publishProgress(i);
-//					try {
-//						Thread.sleep(SLEEP_TIME);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-			// can use arraylist to implement a tracer. each time the x_pos and y_pos are generated
-			//	place the result into an array list and then use tileView.Drawpath to connect the dots.
+				return "Couldn't find SD card";
 
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			super.onProgressUpdate(values);
-			progressBar.setProgress(values[0]);
-			tvLoading.setText("Calculating " + values[0] + " %");
-			tvPer.setText(values[0]+" %");
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-//			x_pos = 0.2;
-//			y_pos = 0.2;
-			final Toast toast = Toast.makeText(getApplicationContext(), "Location Determination Complete", Toast.LENGTH_SHORT);
-			    toast.show();
-			    Handler handler = new Handler();
-			        handler.postDelayed(new Runnable() {
-			           @Override
-			           public void run() {
-			               toast.cancel(); 
-			           }
-			    }, 700);
-			dialog.dismiss();
-			//can make a toast once it is done
-			
-			
-
-	       
-			//	AlertDialog alert = new AlertDialog.Builder(Location.this).create();
-
-		//		alert.setTitle("Completed!!!");
-		//		alert.setMessage("Your Task is Completed SuccessFully!!!");
-//			alert.setButton("Dismiss", new DialogInterface.OnClickListener() {
-//
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					dialog.dismiss();
-//
-//				}
-//			});
-//			alert.show();
-		}
-	}
-	
-    public TileView getTileView(){
-		return tileView;
-	}
-	
-    
-	private View.OnClickListener markerClickListener = new View.OnClickListener() {
-			@Override
-				    public void onClick( View markerB) {
-					// get reference to the TileView
-					TileView tileView = getTileView();
-					
-					final Toast toast = Toast.makeText(getApplicationContext(), "Calculating", Toast.LENGTH_SHORT);
-				    toast.show();
-				    Handler handler = new Handler();
-				        handler.postDelayed(new Runnable() {
-				           @Override
-				           public void run() {
-				               toast.cancel(); 
-				           }
-				    }, 100);
-					SampleCallout callout = new SampleCallout( markerB.getContext() , x_pos, y_pos);
-					tileView.addCallout( callout, x_pos, y_pos, -0.5f, -1.0f );
-					callout.transitionIn();
-					objMyTask = new MyTask();
-					objMyTask.execute();
-					tileView.moveMarker(markerB, x_pos, y_pos+0.05,-0.5f, -1.0f);
-					tileView.moveToAndCenter(x_pos, y_pos);
-// we saved the coordinate in the marker's tag
-					
-// lets center the screen to that coordinate
-//					tileView.slideToAndCenter( position[0], position[1] );
-// create a simple callout
-					
-// add it to the view tree at the same position and offset as the marker that invoked it
-					
-// a little sugar
-					
 			}
-};
-    
-    
-    
-    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+			String wifiData = "wifiData";
+		
+			if (isDegree) {
+				if (45 <= currentDegree && currentDegree < 135) {
+					wifiData = "wifiData90";
+				} else if (135 <= currentDegree && currentDegree < 225) {
+					wifiData = "wifiData180";
+				} else if (225 <= currentDegree && currentDegree < 315) {
+				wifiData = "wifiData270";
+				} else {
+					wifiData = "wifiData0";
+				}
+			} else {
+				wifiData = "wifiRoom";
+			}
+
+			
+			File dbBackupFile = new File(
+					Environment.getExternalStorageDirectory(), wifiData);
+
+			if (!dbBackupFile.exists()) {
+
+				return "couldn't find: " + wifiData;
+
+			} else if (!dbBackupFile.canRead()) {
+
+				return "found SDcard" + wifiData + "but can't read!";
+
+			}
+
+			Log.e("sss", "currentDegree:" + currentDegree);
+			Log.e("sss", "wifiData" + wifiData);
+
+			kjdb = KJDB.create(Location.this, Environment
+					.getExternalStorageDirectory().toString(), wifiData, true);
+			return "Imported completed!";
+
 		}
-		return super.onOptionsItemSelected(item);
-	}
-}
 
+		@Override
+		protected void onPostExecute(final String msg) {
+
+			if (this.dialog.isShowing()) {
+
+				this.dialog.dismiss();
+
+			}
+
+			Toast.makeText(Location.this, msg, Toast.LENGTH_SHORT).show();
+
+			readData();
+		}
+
+	}
+
+	
+
+	public static void copyFile(File src, File dst) throws IOException {
+
+		FileChannel inChannel = new FileInputStream(src).getChannel();
+
+		FileChannel outChannel = new FileOutputStream(dst).getChannel();
+
+		try {
+
+			inChannel.transferTo(0, inChannel.size(), outChannel);
+
+		} finally {
+
+			if (inChannel != null)
+
+				inChannel.close();
+
+			if (outChannel != null)
+
+				outChannel.close();
+
+		}
+
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		float degree = Math.round(event.values[0]);
+		currentDegree = degree;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+	}
+	
+	
+}
