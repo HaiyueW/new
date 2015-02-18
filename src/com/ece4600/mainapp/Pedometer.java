@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class Pedometer extends Activity{
 	
-	private TextView currentX, currentY, currentZ, maxX, maxY, maxZ, step,speed;
+	private TextView step,speed;
 	Button reset, returnbutton, start, stop;
 	private int stepnum = 0, stepdetect = 0, stepthres = 0;
 	private double speednum = 0;
@@ -52,12 +52,6 @@ public class Pedometer extends Activity{
 	}
 
 	public void initializeViews() {
-		currentX = (TextView) findViewById(R.id.pedo_xaxisdata);
-		currentY = (TextView) findViewById(R.id.pedo_yaxisdata);
-		currentZ = (TextView) findViewById(R.id.pedo_zaxisdata);
-		maxX = (TextView) findViewById(R.id.pedo_accxmax);
-		maxY = (TextView) findViewById(R.id.pedo_accymax);
-		maxZ = (TextView) findViewById(R.id.pedo_acczmax);
 		step = (TextView) findViewById(R.id.pedo_stepnum);
 		speed = (TextView) findViewById(R.id.pedo_speednum);
 	}
@@ -156,12 +150,6 @@ public class Pedometer extends Activity{
 			finish();
 			break;
 		case R.id.pedo_reset:
-			currentX.setText("0.0");
-			currentY.setText("0.0");
-			currentZ.setText("0.0");
-			maxX.setText("0.0");
-			maxY.setText("0.0");
-			maxZ.setText("0.0");
 			step.setText("0.0");
 			speed.setText("0.0");
 			startflag = false;		
@@ -256,12 +244,12 @@ public class Pedometer extends Activity{
 		        	float CurrentZ  = intent.getFloatExtra("CurrentZ", 0.0f);
 		        	
 		        	if (startflag == true){
-		        	maxX.setText(Float.toString(MaxX)); // This is different from posture. Perhaps you dont have to convert your float value
-		        	maxY.setText(Float.toString(MaxY));
-		        	maxZ.setText(Float.toString(MaxZ));
-		        	currentX.setText(Float.toString(CurrentX));
-		        	currentY.setText(Float.toString(CurrentY));
-		        	currentZ.setText(Float.toString(CurrentZ));
+//		        	maxX.setText(Float.toString(MaxX)); // This is different from posture. Perhaps you dont have to convert your float value
+//		        	maxY.setText(Float.toString(MaxY));
+//		        	maxZ.setText(Float.toString(MaxZ));
+//		        	currentX.setText(Float.toString(CurrentX));
+//		        	currentY.setText(Float.toString(CurrentY));
+//		        	currentZ.setText(Float.toString(CurrentZ));
 		        	step.setText(Integer.toString(stepdetect));
 		        	speed.setText(Double.toString(speednum)+" steps/min");
 		        	}

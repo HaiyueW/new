@@ -1,39 +1,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ece4600.mainapp.Posture" >
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/tableRow8"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/postureHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current Posture:"
-                android:textSize="30sp" />
-
+                android:textSize="22sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" 
-          >
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/postureText"
@@ -41,15 +38,34 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10sp"
                 android:text="Standing"
-                android:textSize="25sp" />
+                android:textSize="22sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/displayIMG"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="0dip"
+                android:scaleType="fitStart" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-          >
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/textView2"
@@ -63,79 +79,60 @@
 
         <TableRow
             android:id="@+id/tableRow4"
-			android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-             >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/posture1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medium Text"
+                android:layout_weight="0.5"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="18sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
 
             <TextView
                 android:id="@+id/posture2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medium Text"
+                android:layout_weight="0.5"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </TableRow>
 
         <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
             android:id="@+id/tableRow6"
-			android:layout_width="match_parent"
-      	    android:layout_height="match_parent"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/posture3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medium Text"
+                android:layout_weight="0.5"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow7"
-           	android:layout_width="match_parent"
-       	    android:layout_height="match_parent"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/posture4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medium Text"
+                android:layout_weight="0.5"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow8"
-			android:layout_width="match_parent"
-       	    android:layout_height="match_parent"
-           >
-
-            <TextView
-                android:id="@+id/posture5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
-                android:text="Medium Text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </TableRow>
 
         <TableRow
@@ -143,17 +140,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <ImageView
-                android:id="@+id/displayIMG"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.05"
-                android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/posture5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:id="@+id/pieChart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="100dp"
                 android:layout_weight="0.95"
                 android:orientation="vertical" >
             </LinearLayout>
@@ -161,51 +165,25 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow10"
-			android:layout_width="match_parent"
-            android:layout_height="0dp"
-           
-            >
-
-        </TableRow>
-
-        <TableRow
             android:id="@+id/tableRow11"
-			android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <Button
                 android:id="@+id/button1"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:text="Clear" />
 
             <Button
                 android:id="@+id/returnpost"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:text="@string/returnpost" />
-
         </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow12"
-			android:layout_width="match_parent"
-        	android:layout_height="200dp"
-           >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow13"
-			android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-            >
-
-        </TableRow>
-
-    </TableLayout>
+    </LinearLayout>
 
 </RelativeLayout>
