@@ -191,7 +191,7 @@ public class Location extends Activity implements OnClickListener,SensorEventLis
 		btPause = (Button) findViewById(R.id.pause);
 		btn_map = (Button) findViewById(R.id.btn_map);
 		btn_map.setOnClickListener(this);
-		btReturn=(Button) findViewById(R.id.button1);
+		btReturn=(Button) findViewById(R.id.pedo_save);
 		
 		btReturn.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v) {

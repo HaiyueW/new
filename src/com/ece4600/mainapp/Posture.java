@@ -140,7 +140,7 @@ public class Posture extends Activity {
 		postureSettings.registerOnSharedPreferenceChangeListener(settingsListen);
 		restorePreferences();
 		
-		clear = (Button)findViewById(R.id.button1);
+		clear = (Button)findViewById(R.id.pedo_save);
 		
 		clear.setOnClickListener(new View.OnClickListener() {
 			@Override

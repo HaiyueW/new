@@ -58,20 +58,6 @@
     <string name="blueoff">Turn Off</string>
     <string name="bluetooth">Bluetooth Settings</string>
     <string name="bluecancel">Cancel</string>
-    <string name="pedo_currentacc">Current Acceleration</string>
-    <string name="pedo_xaxis">X-Axis</string>
-    <string name="pedo_yaxis">Y-Axis</string>
-    <string name="pedo_zaxis">Z-Axis</string>
-    <string name="pedo_xaxisdata">0.0</string>
-    <string name="pedo_yaxisdata">0.0</string>
-    <string name="pedo_zaxisdata">0.0</string>
-    <string name="pedo_maxacc">Max Acceleration</string>
-    <string name="pedo_xaxismax">Acc-X</string>
-    <string name="pedo_yaxismax">Acc-Y</string>
-    <string name="pedo_zaxismax">Acc-Z</string>
-    <string name="pedo_accxmax">0.0</string>
-    <string name="pedo_accymax">0.0</string>
-    <string name="pedo_acczmax">0.0</string>
     <string name="pedo_step">Step detection</string>
     <string name="pedo_stepnum">0.0</string>
     <string name="pedo_reset">Reset</string>
@@ -86,4 +72,13 @@
     <string name="logOutString">Log out</string>
     <string name="DOB">D.O.B.: MM/DD/YYYY</string>
     <string name="title_activity_editProfile">Edit Profile</string>
+    <string name="title_activity_target_setting">TargetSetting</string>
+    <string name="pedo_target">Target Steps</string>
+    <string name="pedo_size">Step Size (Meter)</string>
+    <string name="pedo_save">Save Changes</string>
+    <string name="pedo_can">Cancel</string>
+    <string name="pedo_targets">Target Steps</string>
+    <string name="pedo_targetsnum">0000</string>
+    <string name="pedo_bar">0%</string>
+
 </resources>
